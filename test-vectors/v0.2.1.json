@@ -1,0 +1,298 @@
+{
+  "spec": "org.jardenberg/verifiable-mcp",
+  "spec_version": "0.2.1",
+  "warning": "TEST VECTORS ONLY. The private key below is public by design. NEVER use this key in production.",
+  "canonicalization_note": "Vector data uses strings and integers, for which sorted-keys compact JSON is byte-identical to RFC 8785 (JCS). Implementations MUST still use a tested JCS library.",
+  "jws_typ": "verifiable-mcp+jws",
+  "test_jwk_private": {
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "x": "PNL-9wyKHnrinD7J6P3vVoy5_zSSxBvlKeBbQ7OGh8k",
+    "d": "0pWs5HeFEK-hTZL99hS6NBzlWBJBpyTSRDfa54qPUOE",
+    "kid": "vDGVZHcIh5irseqRr1yIYo2IsyYckjLowPLc5VT5nP4",
+    "alg": "EdDSA",
+    "use": "sig"
+  },
+  "jwks": {
+    "keys": [
+      {
+        "kty": "OKP",
+        "crv": "Ed25519",
+        "x": "PNL-9wyKHnrinD7J6P3vVoy5_zSSxBvlKeBbQ7OGh8k",
+        "kid": "vDGVZHcIh5irseqRr1yIYo2IsyYckjLowPLc5VT5nP4",
+        "alg": "EdDSA",
+        "use": "sig"
+      }
+    ]
+  },
+  "cases": [
+    {
+      "name": "positive_tools_json_arm",
+      "expect": "pass",
+      "kind": "tools/call",
+      "wrapper": {
+        "iat": 1787308800,
+        "payload": {
+          "query": "test",
+          "results": [
+            {
+              "title": "Test document",
+              "url": "https://example.org/doc/1",
+              "snippet": "This is the test vector document."
+            }
+          ],
+          "total": 1
+        },
+        "payload_digest": "sha256:2a0b13235c35a156618354af75774020f3e34e4e70283987b4ec6ab1bc00478a",
+        "content_digest": "sha256:2a0b13235c35a156618354af75774020f3e34e4e70283987b4ec6ab1bc00478a",
+        "provenance": {
+          "server_operator": "Example Operator (TEST)",
+          "canonical_origin": "https://example.org",
+          "canonical_url": "https://example.org/doc/1",
+          "legal_basis": "TEST vector - no rights conveyed",
+          "dataset_version": "d20260821.test",
+          "last_updated": "2026-08-21"
+        }
+      },
+      "content_text": "{\"query\":\"test\",\"results\":[{\"snippet\":\"This is the test vector document.\",\"title\":\"Test document\",\"url\":\"https://example.org/doc/1\"}],\"total\":1}",
+      "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6InZER1ZaSGNJaDVpcnNlcVJyMXlJWW8ySXN5WWNrakxvd1BMYzVWVDVuUDQiLCJ0eXAiOiJ2ZXJpZmlhYmxlLW1jcCtqd3MifQ.eyJjb250ZW50X2RpZ2VzdCI6InNoYTI1NjoyYTBiMTMyMzVjMzVhMTU2NjE4MzU0YWY3NTc3NDAyMGYzZTM0ZTRlNzAyODM5ODdiNGVjNmFiMWJjMDA0NzhhIiwiaWF0IjoxNzg3MzA4ODAwLCJwYXlsb2FkIjp7InF1ZXJ5IjoidGVzdCIsInJlc3VsdHMiOlt7InNuaXBwZXQiOiJUaGlzIGlzIHRoZSB0ZXN0IHZlY3RvciBkb2N1bWVudC4iLCJ0aXRsZSI6IlRlc3QgZG9jdW1lbnQiLCJ1cmwiOiJodHRwczovL2V4YW1wbGUub3JnL2RvYy8xIn1dLCJ0b3RhbCI6MX0sInBheWxvYWRfZGlnZXN0Ijoic2hhMjU2OjJhMGIxMzIzNWMzNWExNTY2MTgzNTRhZjc1Nzc0MDIwZjNlMzRlNGU3MDI4Mzk4N2I0ZWM2YWIxYmMwMDQ3OGEiLCJwcm92ZW5hbmNlIjp7ImNhbm9uaWNhbF9vcmlnaW4iOiJodHRwczovL2V4YW1wbGUub3JnIiwiY2Fub25pY2FsX3VybCI6Imh0dHBzOi8vZXhhbXBsZS5vcmcvZG9jLzEiLCJkYXRhc2V0X3ZlcnNpb24iOiJkMjAyNjA4MjEudGVzdCIsImxhc3RfdXBkYXRlZCI6IjIwMjYtMDgtMjEiLCJsZWdhbF9iYXNpcyI6IlRFU1QgdmVjdG9yIC0gbm8gcmlnaHRzIGNvbnZleWVkIiwic2VydmVyX29wZXJhdG9yIjoiRXhhbXBsZSBPcGVyYXRvciAoVEVTVCkifX0.YQwO77Ql7yw5bbPgzDrX1Ih1kDZPzxiF_HGoxH4tsCa9flrKD5cb90AF8iIcNTVX6FLyoqk__EqghTcxSCmgBw",
+      "note": "text arm IS the canonical payload; content_digest == digest of canonical payload"
+    },
+    {
+      "name": "positive_tools_prose_arm",
+      "expect": "pass",
+      "kind": "tools/call",
+      "wrapper": {
+        "iat": 1787308800,
+        "payload": {
+          "title": "Åsa's fäbod",
+          "body": "Smörgåsbord räksmörgås – naïve façade",
+          "year": 2010
+        },
+        "payload_digest": "sha256:960bc14a79b60017a12b0cc1269da985266faddd06151644e97e0b368c66dd34",
+        "content_digest": "sha256:4da74ed83a6a9cc7e4ed58e6a595ded5aa8e4b88a67b8a9481e9e4a11c939e4d",
+        "provenance": {
+          "server_operator": "Example Operator (TEST)",
+          "canonical_origin": "https://example.org",
+          "canonical_url": "https://example.org/doc/1",
+          "legal_basis": "TEST vector - no rights conveyed",
+          "dataset_version": "d20260821.test",
+          "last_updated": "2026-08-21"
+        }
+      },
+      "content_text": "Åsa's fäbod (2010): Smörgåsbord räksmörgås – naïve façade",
+      "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6InZER1ZaSGNJaDVpcnNlcVJyMXlJWW8ySXN5WWNrakxvd1BMYzVWVDVuUDQiLCJ0eXAiOiJ2ZXJpZmlhYmxlLW1jcCtqd3MifQ.eyJjb250ZW50X2RpZ2VzdCI6InNoYTI1Njo0ZGE3NGVkODNhNmE5Y2M3ZTRlZDU4ZTZhNTk1ZGVkNWFhOGU0Yjg4YTY3YjhhOTQ4MWU5ZTRhMTFjOTM5ZTRkIiwiaWF0IjoxNzg3MzA4ODAwLCJwYXlsb2FkIjp7ImJvZHkiOiJTbcO2cmfDpXNib3JkIHLDpGtzbcO2cmfDpXMg4oCTIG5hw692ZSBmYcOnYWRlIiwidGl0bGUiOiLDhXNhJ3MgZsOkYm9kIiwieWVhciI6MjAxMH0sInBheWxvYWRfZGlnZXN0Ijoic2hhMjU2Ojk2MGJjMTRhNzliNjAwMTdhMTJiMGNjMTI2OWRhOTg1MjY2ZmFkZGQwNjE1MTY0NGU5N2UwYjM2OGM2NmRkMzQiLCJwcm92ZW5hbmNlIjp7ImNhbm9uaWNhbF9vcmlnaW4iOiJodHRwczovL2V4YW1wbGUub3JnIiwiY2Fub25pY2FsX3VybCI6Imh0dHBzOi8vZXhhbXBsZS5vcmcvZG9jLzEiLCJkYXRhc2V0X3ZlcnNpb24iOiJkMjAyNjA4MjEudGVzdCIsImxhc3RfdXBkYXRlZCI6IjIwMjYtMDgtMjEiLCJsZWdhbF9iYXNpcyI6IlRFU1QgdmVjdG9yIC0gbm8gcmlnaHRzIGNvbnZleWVkIiwic2VydmVyX29wZXJhdG9yIjoiRXhhbXBsZSBPcGVyYXRvciAoVEVTVCkifX0.Ozg78JdZvGLBjWzI8tekWulWIS3wzZLFAzYbamEyDicd7kFTRaZGMHxLxZzLBooiXtWf3tWz9UTEMSnZxWpxCQ",
+      "note": "prose text arm with non-ASCII; content_digest over decoded UTF-8 string, differs from payload_digest"
+    },
+    {
+      "name": "positive_resources_read",
+      "expect": "pass",
+      "kind": "resources/read",
+      "wrapper": {
+        "iat": 1787308800,
+        "payload": {
+          "contents": [
+            {
+              "uri": "test://doc/1",
+              "mimeType": "text/markdown",
+              "text": "# Test\nA resource body."
+            }
+          ]
+        },
+        "payload_digest": "sha256:77e0eb232804090c5e3d926c6a87dbd868fda1f51925505f4848367294984f82",
+        "content_digest": "sha256:2d388edaff23d933bea7ba1337ffc30d127e912460ee6b2f94a5e0b41d2cbacd",
+        "provenance": {
+          "server_operator": "Example Operator (TEST)",
+          "canonical_origin": "https://example.org",
+          "canonical_url": "https://example.org/doc/1",
+          "legal_basis": "TEST vector - no rights conveyed",
+          "dataset_version": "d20260821.test",
+          "last_updated": "2026-08-21"
+        }
+      },
+      "content_text": "# Test\nA resource body.",
+      "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6InZER1ZaSGNJaDVpcnNlcVJyMXlJWW8ySXN5WWNrakxvd1BMYzVWVDVuUDQiLCJ0eXAiOiJ2ZXJpZmlhYmxlLW1jcCtqd3MifQ.eyJjb250ZW50X2RpZ2VzdCI6InNoYTI1NjoyZDM4OGVkYWZmMjNkOTMzYmVhN2JhMTMzN2ZmYzMwZDEyN2U5MTI0NjBlZTZiMmY5NGE1ZTBiNDFkMmNiYWNkIiwiaWF0IjoxNzg3MzA4ODAwLCJwYXlsb2FkIjp7ImNvbnRlbnRzIjpbeyJtaW1lVHlwZSI6InRleHQvbWFya2Rvd24iLCJ0ZXh0IjoiIyBUZXN0XG5BIHJlc291cmNlIGJvZHkuIiwidXJpIjoidGVzdDovL2RvYy8xIn1dfSwicGF5bG9hZF9kaWdlc3QiOiJzaGEyNTY6NzdlMGViMjMyODA0MDkwYzVlM2Q5MjZjNmE4N2RiZDg2OGZkYTFmNTE5MjU1MDVmNDg0ODM2NzI5NDk4NGY4MiIsInByb3ZlbmFuY2UiOnsiY2Fub25pY2FsX29yaWdpbiI6Imh0dHBzOi8vZXhhbXBsZS5vcmciLCJjYW5vbmljYWxfdXJsIjoiaHR0cHM6Ly9leGFtcGxlLm9yZy9kb2MvMSIsImRhdGFzZXRfdmVyc2lvbiI6ImQyMDI2MDgyMS50ZXN0IiwibGFzdF91cGRhdGVkIjoiMjAyNi0wOC0yMSIsImxlZ2FsX2Jhc2lzIjoiVEVTVCB2ZWN0b3IgLSBubyByaWdodHMgY29udmV5ZWQiLCJzZXJ2ZXJfb3BlcmF0b3IiOiJFeGFtcGxlIE9wZXJhdG9yIChURVNUKSJ9fQ.iOqqj1kcCXmCymsNyojOBOrw5vi2QT1RiJZQuiihb6M5I57MTZ5nbqQa8KEPxAprka0no6V2i-WzNvBPByWrBA"
+    },
+    {
+      "name": "positive_error_frame",
+      "expect": "pass",
+      "kind": "error",
+      "wrapper": {
+        "iat": 1787308800,
+        "payload": {
+          "id": 42,
+          "error": {
+            "code": -32602,
+            "message": "Unknown argument for 'get_text': bogus. Valid arguments: slug, nr."
+          }
+        },
+        "payload_digest": "sha256:6d5736be8c112640120207e09a4e3572552b2f673f920a244bf82a7b8bc6f338",
+        "provenance": {
+          "server_operator": "Example Operator (TEST)",
+          "canonical_origin": "https://example.org",
+          "canonical_url": "https://example.org/doc/1",
+          "legal_basis": "TEST vector - no rights conveyed",
+          "dataset_version": "d20260821.test",
+          "last_updated": "2026-08-21"
+        }
+      },
+      "content_text": null,
+      "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6InZER1ZaSGNJaDVpcnNlcVJyMXlJWW8ySXN5WWNrakxvd1BMYzVWVDVuUDQiLCJ0eXAiOiJ2ZXJpZmlhYmxlLW1jcCtqd3MifQ.eyJpYXQiOjE3ODczMDg4MDAsInBheWxvYWQiOnsiZXJyb3IiOnsiY29kZSI6LTMyNjAyLCJtZXNzYWdlIjoiVW5rbm93biBhcmd1bWVudCBmb3IgJ2dldF90ZXh0JzogYm9ndXMuIFZhbGlkIGFyZ3VtZW50czogc2x1ZywgbnIuIn0sImlkIjo0Mn0sInBheWxvYWRfZGlnZXN0Ijoic2hhMjU2OjZkNTczNmJlOGMxMTI2NDAxMjAyMDdlMDlhNGUzNTcyNTUyYjJmNjczZjkyMGEyNDRiZjgyYTdiOGJjNmYzMzgiLCJwcm92ZW5hbmNlIjp7ImNhbm9uaWNhbF9vcmlnaW4iOiJodHRwczovL2V4YW1wbGUub3JnIiwiY2Fub25pY2FsX3VybCI6Imh0dHBzOi8vZXhhbXBsZS5vcmcvZG9jLzEiLCJkYXRhc2V0X3ZlcnNpb24iOiJkMjAyNjA4MjEudGVzdCIsImxhc3RfdXBkYXRlZCI6IjIwMjYtMDgtMjEiLCJsZWdhbF9iYXNpcyI6IlRFU1QgdmVjdG9yIC0gbm8gcmlnaHRzIGNvbnZleWVkIiwic2VydmVyX29wZXJhdG9yIjoiRXhhbXBsZSBPcGVyYXRvciAoVEVTVCkifX0.y362b4aphftdDpnGggGR1tcFzAGtGwcrD6cMZYSAtxuUUCLBvlbQJRJBYj6jpqoxI_rQw_QFb9u6FAjVDG70Aw",
+      "note": "error wrappers carry no content_digest (no text arm)"
+    },
+    {
+      "name": "negative_tampered_payload",
+      "expect": "fail",
+      "kind": "tools/call",
+      "wrapper": {
+        "iat": 1787308800,
+        "payload": {
+          "query": "test",
+          "results": [
+            {
+              "title": "Test document",
+              "url": "https://example.org/doc/1",
+              "snippet": "This is the test vector document."
+            }
+          ],
+          "total": 2
+        },
+        "payload_digest": "sha256:2a0b13235c35a156618354af75774020f3e34e4e70283987b4ec6ab1bc00478a",
+        "content_digest": "sha256:2a0b13235c35a156618354af75774020f3e34e4e70283987b4ec6ab1bc00478a",
+        "provenance": {
+          "server_operator": "Example Operator (TEST)",
+          "canonical_origin": "https://example.org",
+          "canonical_url": "https://example.org/doc/1",
+          "legal_basis": "TEST vector - no rights conveyed",
+          "dataset_version": "d20260821.test",
+          "last_updated": "2026-08-21"
+        }
+      },
+      "content_text": "{\"query\":\"test\",\"results\":[{\"snippet\":\"This is the test vector document.\",\"title\":\"Test document\",\"url\":\"https://example.org/doc/1\"}],\"total\":1}",
+      "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6InZER1ZaSGNJaDVpcnNlcVJyMXlJWW8ySXN5WWNrakxvd1BMYzVWVDVuUDQiLCJ0eXAiOiJ2ZXJpZmlhYmxlLW1jcCtqd3MifQ.eyJjb250ZW50X2RpZ2VzdCI6InNoYTI1NjoyYTBiMTMyMzVjMzVhMTU2NjE4MzU0YWY3NTc3NDAyMGYzZTM0ZTRlNzAyODM5ODdiNGVjNmFiMWJjMDA0NzhhIiwiaWF0IjoxNzg3MzA4ODAwLCJwYXlsb2FkIjp7InF1ZXJ5IjoidGVzdCIsInJlc3VsdHMiOlt7InNuaXBwZXQiOiJUaGlzIGlzIHRoZSB0ZXN0IHZlY3RvciBkb2N1bWVudC4iLCJ0aXRsZSI6IlRlc3QgZG9jdW1lbnQiLCJ1cmwiOiJodHRwczovL2V4YW1wbGUub3JnL2RvYy8xIn1dLCJ0b3RhbCI6MX0sInBheWxvYWRfZGlnZXN0Ijoic2hhMjU2OjJhMGIxMzIzNWMzNWExNTY2MTgzNTRhZjc1Nzc0MDIwZjNlMzRlNGU3MDI4Mzk4N2I0ZWM2YWIxYmMwMDQ3OGEiLCJwcm92ZW5hbmNlIjp7ImNhbm9uaWNhbF9vcmlnaW4iOiJodHRwczovL2V4YW1wbGUub3JnIiwiY2Fub25pY2FsX3VybCI6Imh0dHBzOi8vZXhhbXBsZS5vcmcvZG9jLzEiLCJkYXRhc2V0X3ZlcnNpb24iOiJkMjAyNjA4MjEudGVzdCIsImxhc3RfdXBkYXRlZCI6IjIwMjYtMDgtMjEiLCJsZWdhbF9iYXNpcyI6IlRFU1QgdmVjdG9yIC0gbm8gcmlnaHRzIGNvbnZleWVkIiwic2VydmVyX29wZXJhdG9yIjoiRXhhbXBsZSBPcGVyYXRvciAoVEVTVCkifX0.YQwO77Ql7yw5bbPgzDrX1Ih1kDZPzxiF_HGoxH4tsCa9flrKD5cb90AF8iIcNTVX6FLyoqk__EqghTcxSCmgBw",
+      "note": "payload edited after signing; JWS payload no longer matches canonical wrapper"
+    },
+    {
+      "name": "negative_unknown_kid",
+      "expect": "fail",
+      "kind": "tools/call",
+      "wrapper": {
+        "iat": 1787308800,
+        "payload": {
+          "query": "test",
+          "results": [
+            {
+              "title": "Test document",
+              "url": "https://example.org/doc/1",
+              "snippet": "This is the test vector document."
+            }
+          ],
+          "total": 1
+        },
+        "payload_digest": "sha256:2a0b13235c35a156618354af75774020f3e34e4e70283987b4ec6ab1bc00478a",
+        "content_digest": "sha256:2a0b13235c35a156618354af75774020f3e34e4e70283987b4ec6ab1bc00478a",
+        "provenance": {
+          "server_operator": "Example Operator (TEST)",
+          "canonical_origin": "https://example.org",
+          "canonical_url": "https://example.org/doc/1",
+          "legal_basis": "TEST vector - no rights conveyed",
+          "dataset_version": "d20260821.test",
+          "last_updated": "2026-08-21"
+        }
+      },
+      "content_text": "{\"query\":\"test\",\"results\":[{\"snippet\":\"This is the test vector document.\",\"title\":\"Test document\",\"url\":\"https://example.org/doc/1\"}],\"total\":1}",
+      "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6IlVOS05PV05fS0lEX05PVF9JTl9BTllfSldLU18wMDAwMDAwMDAwMDAwIiwidHlwIjoidmVyaWZpYWJsZS1tY3ArandzIn0.eyJjb250ZW50X2RpZ2VzdCI6InNoYTI1NjoyYTBiMTMyMzVjMzVhMTU2NjE4MzU0YWY3NTc3NDAyMGYzZTM0ZTRlNzAyODM5ODdiNGVjNmFiMWJjMDA0NzhhIiwiaWF0IjoxNzg3MzA4ODAwLCJwYXlsb2FkIjp7InF1ZXJ5IjoidGVzdCIsInJlc3VsdHMiOlt7InNuaXBwZXQiOiJUaGlzIGlzIHRoZSB0ZXN0IHZlY3RvciBkb2N1bWVudC4iLCJ0aXRsZSI6IlRlc3QgZG9jdW1lbnQiLCJ1cmwiOiJodHRwczovL2V4YW1wbGUub3JnL2RvYy8xIn1dLCJ0b3RhbCI6MX0sInBheWxvYWRfZGlnZXN0Ijoic2hhMjU2OjJhMGIxMzIzNWMzNWExNTY2MTgzNTRhZjc1Nzc0MDIwZjNlMzRlNGU3MDI4Mzk4N2I0ZWM2YWIxYmMwMDQ3OGEiLCJwcm92ZW5hbmNlIjp7ImNhbm9uaWNhbF9vcmlnaW4iOiJodHRwczovL2V4YW1wbGUub3JnIiwiY2Fub25pY2FsX3VybCI6Imh0dHBzOi8vZXhhbXBsZS5vcmcvZG9jLzEiLCJkYXRhc2V0X3ZlcnNpb24iOiJkMjAyNjA4MjEudGVzdCIsImxhc3RfdXBkYXRlZCI6IjIwMjYtMDgtMjEiLCJsZWdhbF9iYXNpcyI6IlRFU1QgdmVjdG9yIC0gbm8gcmlnaHRzIGNvbnZleWVkIiwic2VydmVyX29wZXJhdG9yIjoiRXhhbXBsZSBPcGVyYXRvciAoVEVTVCkifX0.2llxSzkPPl6ZSc3FmPewC0n50fdde6-5H95RSEj61O2zmmDipNKSD61fZVQCTVA2coGrHAuZCzU-5MNbQODpDg",
+      "note": "kid not resolvable in the JWKS; verifier MUST fail closed"
+    },
+    {
+      "name": "negative_wrong_alg",
+      "expect": "fail",
+      "kind": "tools/call",
+      "wrapper": {
+        "iat": 1787308800,
+        "payload": {
+          "query": "test",
+          "results": [
+            {
+              "title": "Test document",
+              "url": "https://example.org/doc/1",
+              "snippet": "This is the test vector document."
+            }
+          ],
+          "total": 1
+        },
+        "payload_digest": "sha256:2a0b13235c35a156618354af75774020f3e34e4e70283987b4ec6ab1bc00478a",
+        "content_digest": "sha256:2a0b13235c35a156618354af75774020f3e34e4e70283987b4ec6ab1bc00478a",
+        "provenance": {
+          "server_operator": "Example Operator (TEST)",
+          "canonical_origin": "https://example.org",
+          "canonical_url": "https://example.org/doc/1",
+          "legal_basis": "TEST vector - no rights conveyed",
+          "dataset_version": "d20260821.test",
+          "last_updated": "2026-08-21"
+        }
+      },
+      "content_text": "{\"query\":\"test\",\"results\":[{\"snippet\":\"This is the test vector document.\",\"title\":\"Test document\",\"url\":\"https://example.org/doc/1\"}],\"total\":1}",
+      "jws": "eyJhbGciOiJSUzI1NiIsImtpZCI6InZER1ZaSGNJaDVpcnNlcVJyMXlJWW8ySXN5WWNrakxvd1BMYzVWVDVuUDQiLCJ0eXAiOiJ2ZXJpZmlhYmxlLW1jcCtqd3MifQ.eyJjb250ZW50X2RpZ2VzdCI6InNoYTI1NjoyYTBiMTMyMzVjMzVhMTU2NjE4MzU0YWY3NTc3NDAyMGYzZTM0ZTRlNzAyODM5ODdiNGVjNmFiMWJjMDA0NzhhIiwiaWF0IjoxNzg3MzA4ODAwLCJwYXlsb2FkIjp7InF1ZXJ5IjoidGVzdCIsInJlc3VsdHMiOlt7InNuaXBwZXQiOiJUaGlzIGlzIHRoZSB0ZXN0IHZlY3RvciBkb2N1bWVudC4iLCJ0aXRsZSI6IlRlc3QgZG9jdW1lbnQiLCJ1cmwiOiJodHRwczovL2V4YW1wbGUub3JnL2RvYy8xIn1dLCJ0b3RhbCI6MX0sInBheWxvYWRfZGlnZXN0Ijoic2hhMjU2OjJhMGIxMzIzNWMzNWExNTY2MTgzNTRhZjc1Nzc0MDIwZjNlMzRlNGU3MDI4Mzk4N2I0ZWM2YWIxYmMwMDQ3OGEiLCJwcm92ZW5hbmNlIjp7ImNhbm9uaWNhbF9vcmlnaW4iOiJodHRwczovL2V4YW1wbGUub3JnIiwiY2Fub25pY2FsX3VybCI6Imh0dHBzOi8vZXhhbXBsZS5vcmcvZG9jLzEiLCJkYXRhc2V0X3ZlcnNpb24iOiJkMjAyNjA4MjEudGVzdCIsImxhc3RfdXBkYXRlZCI6IjIwMjYtMDgtMjEiLCJsZWdhbF9iYXNpcyI6IlRFU1QgdmVjdG9yIC0gbm8gcmlnaHRzIGNvbnZleWVkIiwic2VydmVyX29wZXJhdG9yIjoiRXhhbXBsZSBPcGVyYXRvciAoVEVTVCkifX0.sKIFKVHMFbIVIxMzaPaaX3oUJcMCwML8-nI6Q7pu8L1VKkMEKs3Rk70924PPhAPrHtvp0ZjTP7Ux6zwBZctVDw",
+      "note": "header claims RS256; verifier MUST reject before any signature math (alg pinning)"
+    },
+    {
+      "name": "negative_mismatched_content_digest",
+      "expect": "fail",
+      "kind": "tools/call",
+      "wrapper": {
+        "iat": 1787308800,
+        "payload": {
+          "title": "Åsa's fäbod",
+          "body": "Smörgåsbord räksmörgås – naïve façade",
+          "year": 2010
+        },
+        "payload_digest": "sha256:960bc14a79b60017a12b0cc1269da985266faddd06151644e97e0b368c66dd34",
+        "content_digest": "sha256:789d7587202faa4a0b27230d58c44280e9829c736a45c35800046198fa4291ee",
+        "provenance": {
+          "server_operator": "Example Operator (TEST)",
+          "canonical_origin": "https://example.org",
+          "canonical_url": "https://example.org/doc/1",
+          "legal_basis": "TEST vector - no rights conveyed",
+          "dataset_version": "d20260821.test",
+          "last_updated": "2026-08-21"
+        }
+      },
+      "content_text": "Åsa's fäbod (2010): Smörgåsbord räksmörgås – naïve façade",
+      "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6InZER1ZaSGNJaDVpcnNlcVJyMXlJWW8ySXN5WWNrakxvd1BMYzVWVDVuUDQiLCJ0eXAiOiJ2ZXJpZmlhYmxlLW1jcCtqd3MifQ.eyJjb250ZW50X2RpZ2VzdCI6InNoYTI1Njo3ODlkNzU4NzIwMmZhYTRhMGIyNzIzMGQ1OGM0NDI4MGU5ODI5YzczNmE0NWMzNTgwMDA0NjE5OGZhNDI5MWVlIiwiaWF0IjoxNzg3MzA4ODAwLCJwYXlsb2FkIjp7ImJvZHkiOiJTbcO2cmfDpXNib3JkIHLDpGtzbcO2cmfDpXMg4oCTIG5hw692ZSBmYcOnYWRlIiwidGl0bGUiOiLDhXNhJ3MgZsOkYm9kIiwieWVhciI6MjAxMH0sInBheWxvYWRfZGlnZXN0Ijoic2hhMjU2Ojk2MGJjMTRhNzliNjAwMTdhMTJiMGNjMTI2OWRhOTg1MjY2ZmFkZGQwNjE1MTY0NGU5N2UwYjM2OGM2NmRkMzQiLCJwcm92ZW5hbmNlIjp7ImNhbm9uaWNhbF9vcmlnaW4iOiJodHRwczovL2V4YW1wbGUub3JnIiwiY2Fub25pY2FsX3VybCI6Imh0dHBzOi8vZXhhbXBsZS5vcmcvZG9jLzEiLCJkYXRhc2V0X3ZlcnNpb24iOiJkMjAyNjA4MjEudGVzdCIsImxhc3RfdXBkYXRlZCI6IjIwMjYtMDgtMjEiLCJsZWdhbF9iYXNpcyI6IlRFU1QgdmVjdG9yIC0gbm8gcmlnaHRzIGNvbnZleWVkIiwic2VydmVyX29wZXJhdG9yIjoiRXhhbXBsZSBPcGVyYXRvciAoVEVTVCkifX0.wuCGZ7EJUxL3kw4dWWsrnIxFecmd04zAQ_PGaX7ckkTUE4I3JKMtOIXB1hvZ325SN_Jbl-E11plXN0MzSD-LBw",
+      "note": "valid signature, but signed content_digest does not match the served text arm"
+    },
+    {
+      "name": "negative_wrong_typ",
+      "expect": "fail",
+      "kind": "tools/call",
+      "wrapper": {
+        "iat": 1787308800,
+        "payload": {
+          "query": "test",
+          "results": [
+            {
+              "title": "Test document",
+              "url": "https://example.org/doc/1",
+              "snippet": "This is the test vector document."
+            }
+          ],
+          "total": 1
+        },
+        "payload_digest": "sha256:2a0b13235c35a156618354af75774020f3e34e4e70283987b4ec6ab1bc00478a",
+        "content_digest": "sha256:2a0b13235c35a156618354af75774020f3e34e4e70283987b4ec6ab1bc00478a",
+        "provenance": {
+          "server_operator": "Example Operator (TEST)",
+          "canonical_origin": "https://example.org",
+          "canonical_url": "https://example.org/doc/1",
+          "legal_basis": "TEST vector - no rights conveyed",
+          "dataset_version": "d20260821.test",
+          "last_updated": "2026-08-21"
+        }
+      },
+      "content_text": "{\"query\":\"test\",\"results\":[{\"snippet\":\"This is the test vector document.\",\"title\":\"Test document\",\"url\":\"https://example.org/doc/1\"}],\"total\":1}",
+      "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6InZER1ZaSGNJaDVpcnNlcVJyMXlJWW8ySXN5WWNrakxvd1BMYzVWVDVuUDQiLCJ0eXAiOiJKT1NFIn0.eyJjb250ZW50X2RpZ2VzdCI6InNoYTI1NjoyYTBiMTMyMzVjMzVhMTU2NjE4MzU0YWY3NTc3NDAyMGYzZTM0ZTRlNzAyODM5ODdiNGVjNmFiMWJjMDA0NzhhIiwiaWF0IjoxNzg3MzA4ODAwLCJwYXlsb2FkIjp7InF1ZXJ5IjoidGVzdCIsInJlc3VsdHMiOlt7InNuaXBwZXQiOiJUaGlzIGlzIHRoZSB0ZXN0IHZlY3RvciBkb2N1bWVudC4iLCJ0aXRsZSI6IlRlc3QgZG9jdW1lbnQiLCJ1cmwiOiJodHRwczovL2V4YW1wbGUub3JnL2RvYy8xIn1dLCJ0b3RhbCI6MX0sInBheWxvYWRfZGlnZXN0Ijoic2hhMjU2OjJhMGIxMzIzNWMzNWExNTY2MTgzNTRhZjc1Nzc0MDIwZjNlMzRlNGU3MDI4Mzk4N2I0ZWM2YWIxYmMwMDQ3OGEiLCJwcm92ZW5hbmNlIjp7ImNhbm9uaWNhbF9vcmlnaW4iOiJodHRwczovL2V4YW1wbGUub3JnIiwiY2Fub25pY2FsX3VybCI6Imh0dHBzOi8vZXhhbXBsZS5vcmcvZG9jLzEiLCJkYXRhc2V0X3ZlcnNpb24iOiJkMjAyNjA4MjEudGVzdCIsImxhc3RfdXBkYXRlZCI6IjIwMjYtMDgtMjEiLCJsZWdhbF9iYXNpcyI6IlRFU1QgdmVjdG9yIC0gbm8gcmlnaHRzIGNvbnZleWVkIiwic2VydmVyX29wZXJhdG9yIjoiRXhhbXBsZSBPcGVyYXRvciAoVEVTVCkifX0.6olz9Q54UnKgScu7cAufibaVg4L_yK_mmUUtRZ-AMv3dzw4zuHDdVMHlMvi4_X386w-5f4qROVFtMgc7xsL8BQ",
+      "note": "typ is not verifiable-mcp+jws; explicit-typing rejection (RFC 8725)"
+    }
+  ]
+}

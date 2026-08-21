@@ -2,7 +2,7 @@
 
 **Signed, sourced, reproducible.** A working pattern for cryptographically verifiable MCP responses: every `tools/call` and `resources/read` answer carries provenance (origin, rights, freshness) and an Ed25519 signature - portable, offline-checkable attribution for knowledge corpora in the agent era. C2PA-spirit, applied to tool output.
 
-**Status: Experimental, spec v0.2.** Three reference servers run this in production (migrating v0.1 → v0.2):
+**Status: Experimental, spec v0.2.1.** Three reference servers run this in production (migrating v0.1 → v0.2.1, dual-emitting during the window):
 
 | Server | Corpus | Rights model |
 |---|---|---|
@@ -18,10 +18,10 @@ Against the published test vectors (offline, no network):
 
 ```bash
 # Python (needs: pip install cryptography; optional: rfc8785)
-python3 verifiers/verify.py --vectors test-vectors/v0.2.json
+python3 verifiers/verify.py --vectors test-vectors/v0.2.1.json
 
 # Node 18+
-cd verifiers && npm install && node verify.mjs --vectors ../test-vectors/v0.2.json
+cd verifiers && npm install && node verify.mjs --vectors ../test-vectors/v0.2.1.json
 ```
 
 Against a live server:
@@ -31,7 +31,7 @@ python3 verifiers/verify.py --live https://ensakidag.se/api/mcp
 node verifiers/verify.mjs --live https://sswcboken.se/api/mcp
 ```
 
-The live check calls one tool, extracts the `_meta["org.jardenberg.verifiable-mcp"]` envelope, fetches the server's published key, verifies the JWS over the RFC 8785 canonical wrapper, and reproduces both digests. If it finds only a v0.1 envelope (sibling `signature` object), it says so: migration in progress, not absence.
+The live check calls one tool, extracts the `_meta["org.jardenberg/verifiable-mcp"]` envelope, fetches the server's published key, verifies the JWS over the RFC 8785 canonical wrapper, and reproduces both digests - failing closed on unknown kids, wrong alg, or wrong typ. If it finds only a v0.1 envelope (sibling `signature` object), it says so: migration in progress, not absence.
 
 ## What a signature proves - and what it never can
 
@@ -47,7 +47,7 @@ Run the [checklist](CHECKLIST.md) against your own corpus. **The specific ask: i
 
 ## Adjacent work (who else looked)
 
-Web Bot Auth / RFC 9421 sign the caller and the pipe. AP2 signs payment mandates. SEP-1766 pins tool versions. An open MCP discussion proposes C2PA credentials via `_meta`. The peer-reviewed Trustworthy MCP Registry work (MDPI, Future Internet 18:243) independently composes well-known discovery + JCS/JWS integrity + transparency logs. Sirenic ships a commercial MCP server pitched on "verify the signature, then read the provenance". None sign the content payload of a knowledge corpus with rights and honesty labels inside the envelope - and the independent convergence is the point: the problem is real.
+Web Bot Auth / RFC 9421 sign the caller and the pipe. AP2 signs payment mandates. The MCP TBOM discussion (#2189) independently converged on JCS + SHA-256 + JWS - for tool definitions; the IETF MCPS draft signs tool definitions with ECDSA P-256 + JCS. An open MCP discussion proposes C2PA credentials via `_meta`. The peer-reviewed Trustworthy MCP Registry work (MDPI, Future Internet 18(5):243) composes well-known discovery + Sigstore + JCS/JWS for registries. Sirenic ships a commercial MCP server whose pitch centers on verifying the signature before reading the provenance. None sign the content payload of a knowledge corpus with rights and honesty labels inside the envelope - and the independent convergence is the point: the problem is real.
 
 ## License
 
