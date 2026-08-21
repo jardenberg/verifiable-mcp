@@ -54,9 +54,12 @@ def verify_jws_strict(jws: str, jwks: list) -> tuple:
     pub.verify(b64u_decode(s), f"{h}.{p}".encode())  # raises InvalidSignature
     return header, b64u_decode(p)
 
-def check_wrapper(wrapper: dict, payload_bytes: bytes, content_text):
+def check_wrapper(wrapper: dict, payload_bytes: bytes, content_text, verbose: bool = False):
+    def ok(label):
+        if verbose: print(f"  [PASS] {label}")
     if payload_bytes != canonicalize(wrapper):
         raise VerifyError("JWS payload != canonical wrapper")
+    ok("JWS verifies; payload == canonical wrapper (typ, alg, kid all strict)")
     if not isinstance(wrapper.get("iat"), int):
         raise VerifyError("iat missing from signed wrapper")
     for banned in ("content_hash", "content_hash_alg", "content_hash_scope"):
@@ -65,14 +68,17 @@ def check_wrapper(wrapper: dict, payload_bytes: bytes, content_text):
     pd = "sha256:" + sha256_hex(canonicalize(wrapper["payload"]))
     if pd != wrapper.get("payload_digest"):
         raise VerifyError("payload_digest does not reproduce")
+    ok("payload_digest reproduces (inside signed wrapper)")
     if content_text is not None:
         cd = "sha256:" + sha256_hex(content_text.encode("utf-8"))
         if cd != wrapper.get("content_digest"):
             raise VerifyError("content_digest does not match the served text arm")
+        ok("content_digest matches the served text arm bytes")
     prov = wrapper.get("provenance", {})
     rights = [k for k in ("license", "legal_basis", "rights") if k in prov]
     if "error" not in wrapper.get("payload", {}) and len(rights) != 1:
         raise VerifyError(f"provenance must carry exactly one rights field, found {rights}")
+    ok("iat present; no v0.1 content_hash* fields; exactly one rights field")
 
 def run_case(wrapper, jws, jwks, content_text):
     header, payload_bytes = verify_jws_strict(jws, jwks)
@@ -80,6 +86,10 @@ def run_case(wrapper, jws, jwks, content_text):
 
 def run_vectors(path: str):
     v = json.load(open(path))
+    if "spec_version" not in v or "cases" not in v:
+        print("This is a v0.2-format vector file (single case, superseded).")
+        print("Use test-vectors/v0.2.1.json - the current set with negatives.")
+        sys.exit(2)
     print(f"verifiable-mcp vectors: {v['spec']} v{v['spec_version']} - {len(v['cases'])} cases")
     jwks = v["jwks"]["keys"]
     failures = 0
@@ -145,7 +155,7 @@ def run_live(endpoint: str, tool: str = None, args_json: str = "{}"):
     content = result.get("content") or []
     if content and content[0].get("type") == "text":
         text = content[0]["text"]
-    check_wrapper(wrapper, payload_bytes, text)
+    check_wrapper(wrapper, payload_bytes, text, verbose=True)
     if result.get("structuredContent") is not None and not result.get("isError"):
         if canonicalize(wrapper["payload"]) != canonicalize(result["structuredContent"]):
             raise VerifyError("signed payload != served structuredContent")

@@ -35,25 +35,36 @@ async function verifyJwsStrict(jws, jwks) {
   return { header, payloadBytes: payload };
 }
 
-function checkWrapper(wrapper, payloadBytes, contentText) {
+function checkWrapper(wrapper, payloadBytes, contentText, verbose = false) {
+  const ok = (label) => { if (verbose) console.log(`  [PASS] ${label}`); };
   if (new TextDecoder().decode(payloadBytes) !== canonicalize(wrapper))
     throw new VerifyError("JWS payload != canonical wrapper");
+  ok("JWS verifies; payload == canonical wrapper (typ, alg, kid all strict)");
   if (!Number.isInteger(wrapper.iat)) throw new VerifyError("iat missing from signed wrapper");
   for (const banned of ["content_hash", "content_hash_alg", "content_hash_scope"])
     if (banned in (wrapper.provenance ?? {}))
       throw new VerifyError(`v0.1 field "${banned}" inside signed wrapper (banned in v0.2.1)`);
   if ("sha256:" + sha256hex(enc(canonicalize(wrapper.payload))) !== wrapper.payload_digest)
     throw new VerifyError("payload_digest does not reproduce");
-  if (contentText != null &&
-      "sha256:" + sha256hex(enc(contentText)) !== wrapper.content_digest)
-    throw new VerifyError("content_digest does not match the served text arm");
+  ok("payload_digest reproduces (inside signed wrapper)");
+  if (contentText != null) {
+    if ("sha256:" + sha256hex(enc(contentText)) !== wrapper.content_digest)
+      throw new VerifyError("content_digest does not match the served text arm");
+    ok("content_digest matches the served text arm bytes");
+  }
   const rights = ["license", "legal_basis", "rights"].filter((k) => k in (wrapper.provenance ?? {}));
   if (!("error" in (wrapper.payload ?? {})) && rights.length !== 1)
     throw new VerifyError(`provenance must carry exactly one rights field, found [${rights}]`);
+  ok("iat present; no v0.1 content_hash* fields; exactly one rights field");
 }
 
 async function runVectors(path) {
   const v = JSON.parse(readFileSync(path, "utf8"));
+  if (!v.spec_version || !v.cases) {
+    console.log("This is a v0.2-format vector file (single case, superseded).");
+    console.log("Use test-vectors/v0.2.1.json - the current set with negatives.");
+    process.exit(2);
+  }
   console.log(`verifiable-mcp vectors: ${v.spec} v${v.spec_version} - ${v.cases.length} cases`);
   let unexpected = 0;
   for (const c of v.cases) {
@@ -104,7 +115,7 @@ async function runLive(endpoint, tool = "server_info", argsJson = "{}") {
   const wrapper = JSON.parse(new TextDecoder().decode(payloadBytes));
   console.log("Verifying against live wire:");
   const text = result.content?.[0]?.type === "text" ? result.content[0].text : null;
-  checkWrapper(wrapper, payloadBytes, text);
+  checkWrapper(wrapper, payloadBytes, text, true);
   if (result.structuredContent != null && !result.isError) {
     if (canonicalize(wrapper.payload) !== canonicalize(result.structuredContent))
       throw new VerifyError("signed payload != served structuredContent");
