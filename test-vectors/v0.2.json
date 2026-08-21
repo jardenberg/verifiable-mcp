@@ -1,0 +1,62 @@
+{
+  "spec": "org.jardenberg.verifiable-mcp/0.2",
+  "warning": "TEST VECTORS ONLY. The private key below is public by design. NEVER use this key in production.",
+  "canonicalization_note": "This vector's data contains only strings and integers, for which sorted-keys compact JSON is byte-identical to RFC 8785 (JCS). Implementations MUST still use a tested JCS library.",
+  "test_jwk_private": {
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "x": "PNL-9wyKHnrinD7J6P3vVoy5_zSSxBvlKeBbQ7OGh8k",
+    "d": "0pWs5HeFEK-hTZL99hS6NBzlWBJBpyTSRDfa54qPUOE",
+    "kid": "vDGVZHcIh5irseqRr1yIYo2IsyYckjLowPLc5VT5nP4",
+    "alg": "EdDSA",
+    "use": "sig"
+  },
+  "test_jwk_public": {
+    "kty": "OKP",
+    "crv": "Ed25519",
+    "x": "PNL-9wyKHnrinD7J6P3vVoy5_zSSxBvlKeBbQ7OGh8k",
+    "kid": "vDGVZHcIh5irseqRr1yIYo2IsyYckjLowPLc5VT5nP4",
+    "alg": "EdDSA",
+    "use": "sig"
+  },
+  "kid_is_rfc7638_thumbprint_of": {
+    "crv": "Ed25519",
+    "kty": "OKP",
+    "x": "PNL-9wyKHnrinD7J6P3vVoy5_zSSxBvlKeBbQ7OGh8k"
+  },
+  "wrapper": {
+    "iat": 1787308800,
+    "payload": {
+      "query": "test",
+      "results": [
+        {
+          "title": "Test document",
+          "url": "https://example.org/doc/1",
+          "snippet": "This is the test vector document."
+        }
+      ],
+      "total": 1
+    },
+    "payload_digest": "sha256:2a0b13235c35a156618354af75774020f3e34e4e70283987b4ec6ab1bc00478a",
+    "content_digest": "sha256:2a0b13235c35a156618354af75774020f3e34e4e70283987b4ec6ab1bc00478a",
+    "provenance": {
+      "server_operator": "Example Operator (TEST)",
+      "canonical_origin": "https://example.org",
+      "canonical_url": "https://example.org/doc/1",
+      "legal_basis": "TEST vector - no rights conveyed",
+      "dataset_version": "d20260821.test",
+      "last_updated": "2026-08-21"
+    }
+  },
+  "canonical_wrapper_utf8_hex": "7b22636f6e74656e745f646967657374223a227368613235363a32613062313332333563333561313536363138333534616637353737343032306633653334653465373032383339383762346563366162316263303034373861222c22696174223a313738373330383830302c227061796c6f6164223a7b227175657279223a2274657374222c22726573756c7473223a5b7b22736e6970706574223a225468697320697320746865207465737420766563746f7220646f63756d656e742e222c227469746c65223a225465737420646f63756d656e74222c2275726c223a2268747470733a2f2f6578616d706c652e6f72672f646f632f31227d5d2c22746f74616c223a317d2c227061796c6f61645f646967657374223a227368613235363a32613062313332333563333561313536363138333534616637353737343032306633653334653465373032383339383762346563366162316263303034373861222c2270726f76656e616e6365223a7b2263616e6f6e6963616c5f6f726967696e223a2268747470733a2f2f6578616d706c652e6f7267222c2263616e6f6e6963616c5f75726c223a2268747470733a2f2f6578616d706c652e6f72672f646f632f31222c22646174617365745f76657273696f6e223a226432303236303832312e74657374222c226c6173745f75706461746564223a22323032362d30382d3231222c226c6567616c5f6261736973223a225445535420766563746f72202d206e6f2072696768747320636f6e7665796564222c227365727665725f6f70657261746f72223a224578616d706c65204f70657261746f7220285445535429227d7d",
+  "canonical_payload_utf8_hex": "7b227175657279223a2274657374222c22726573756c7473223a5b7b22736e6970706574223a225468697320697320746865207465737420766563746f7220646f63756d656e742e222c227469746c65223a225465737420646f63756d656e74222c2275726c223a2268747470733a2f2f6578616d706c652e6f72672f646f632f31227d5d2c22746f74616c223a317d",
+  "payload_digest": "sha256:2a0b13235c35a156618354af75774020f3e34e4e70283987b4ec6ab1bc00478a",
+  "content_text": "{\"query\":\"test\",\"results\":[{\"snippet\":\"This is the test vector document.\",\"title\":\"Test document\",\"url\":\"https://example.org/doc/1\"}],\"total\":1}",
+  "content_digest": "sha256:2a0b13235c35a156618354af75774020f3e34e4e70283987b4ec6ab1bc00478a",
+  "jws_protected_header": {
+    "alg": "EdDSA",
+    "kid": "vDGVZHcIh5irseqRr1yIYo2IsyYckjLowPLc5VT5nP4",
+    "typ": "JWS"
+  },
+  "jws_compact": "eyJhbGciOiJFZERTQSIsImtpZCI6InZER1ZaSGNJaDVpcnNlcVJyMXlJWW8ySXN5WWNrakxvd1BMYzVWVDVuUDQiLCJ0eXAiOiJKV1MifQ.eyJjb250ZW50X2RpZ2VzdCI6InNoYTI1NjoyYTBiMTMyMzVjMzVhMTU2NjE4MzU0YWY3NTc3NDAyMGYzZTM0ZTRlNzAyODM5ODdiNGVjNmFiMWJjMDA0NzhhIiwiaWF0IjoxNzg3MzA4ODAwLCJwYXlsb2FkIjp7InF1ZXJ5IjoidGVzdCIsInJlc3VsdHMiOlt7InNuaXBwZXQiOiJUaGlzIGlzIHRoZSB0ZXN0IHZlY3RvciBkb2N1bWVudC4iLCJ0aXRsZSI6IlRlc3QgZG9jdW1lbnQiLCJ1cmwiOiJodHRwczovL2V4YW1wbGUub3JnL2RvYy8xIn1dLCJ0b3RhbCI6MX0sInBheWxvYWRfZGlnZXN0Ijoic2hhMjU2OjJhMGIxMzIzNWMzNWExNTY2MTgzNTRhZjc1Nzc0MDIwZjNlMzRlNGU3MDI4Mzk4N2I0ZWM2YWIxYmMwMDQ3OGEiLCJwcm92ZW5hbmNlIjp7ImNhbm9uaWNhbF9vcmlnaW4iOiJodHRwczovL2V4YW1wbGUub3JnIiwiY2Fub25pY2FsX3VybCI6Imh0dHBzOi8vZXhhbXBsZS5vcmcvZG9jLzEiLCJkYXRhc2V0X3ZlcnNpb24iOiJkMjAyNjA4MjEudGVzdCIsImxhc3RfdXBkYXRlZCI6IjIwMjYtMDgtMjEiLCJsZWdhbF9iYXNpcyI6IlRFU1QgdmVjdG9yIC0gbm8gcmlnaHRzIGNvbnZleWVkIiwic2VydmVyX29wZXJhdG9yIjoiRXhhbXBsZSBPcGVyYXRvciAoVEVTVCkifX0.n5MtZSRpMYoumICIL4uIJnaWu9wItvIHi9qvB8ego1TCaEEs47o4w6ppYaxMvsf21PFiJ9-ig39jEk7JKgOFBw"
+}
