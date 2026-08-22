@@ -47,7 +47,7 @@ Read [SPEC.md](SPEC.md) - envelope in namespaced `_meta`, signed wrapper `{iat, 
 
 ## Conformance
 
-Run the [checklist](CHECKLIST.md) against your own corpus. **The specific ask: if you operate a corpus agents will quote - an archive, a museum, a municipality - implement the pattern, run the checklist, and [tell us what broke](mailto:joakim@jardenberg.com).** Three strangers reproducing this is worth more than any launch post.
+Run the [checklist](CHECKLIST.md) against your own corpus. **The specific ask: if you operate a corpus agents will quote - an archive, a museum, a municipality - implement the pattern, run the checklist, and [tell us what broke in Discussions](https://github.com/jardenberg/verifiable-mcp/discussions).** (Email works too: joakim@jardenberg.com.) Three strangers reproducing this is worth more than any launch post - and a public trail of conformance reports is the point of the pattern.
 
 ## Adjacent work (who else looked)
 
