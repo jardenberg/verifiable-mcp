@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+- Companion essay added ([ESSAY.md](ESSAY.md)): "Why should an agent believe
+  you?" - the argument in prose, published once all three reference servers
+  went live at v0.2.1 and wire-verified with the repo verifier.
+
 ## v0.2.1 (2026-08-21) - conformance release
 
 Driven by an external reviewer who did what the pattern asks: ran the published

@@ -37,6 +37,10 @@ The live check calls one tool, extracts the `_meta["org.jardenberg/verifiable-mc
 
 A ladder: (1) server authenticity, (2) payload integrity, (3) declared provenance - **delivered**. It *enables* (4) source authority and (5) answer fidelity checks. It never touches (6) **truth**. When operator and author coincide, a verified response approaches "this person's archive said this"; for a third-party index it proves *the index served this representation* - not that the upstream publisher wrote those words. The spec says exactly what it can prove, and no more. That is the approach.
 
+## Why
+
+The companion essay, [Why should an agent believe you?](ESSAY.md), makes the argument in prose: the agentic web runs on an honor system, and honor systems do not scale. Read it with a terminal open - the closing line means it.
+
 ## Spec
 
 Read [SPEC.md](SPEC.md) - envelope in namespaced `_meta`, signed wrapper `{iat, payload, payload_digest, content_digest, provenance}`, RFC 8785 canonicalization, digest-based content binding, key discovery, rights semantics, signed errors, degradation rule, limits (including the honest ones: no revocation, iat is freshness not anti-replay, trust root is origin+optional external anchor).
