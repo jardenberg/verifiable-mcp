@@ -1,0 +1,299 @@
+{
+  "card": {
+    "name": "ensakidag",
+    "version": "1.0.0",
+    "schema_version": 1,
+    "protocolVersion": "2025-11-25",
+    "protocol_versions_supported": [
+      "2025-11-25",
+      "2025-06-18"
+    ],
+    "primitives": [
+      "tools",
+      "resources",
+      "prompts"
+    ],
+    "capabilities": {
+      "search": 1,
+      "topics": 1,
+      "related": 1,
+      "signing": 1,
+      "provenance": 1,
+      "resources": 1,
+      "prompts": 1
+    },
+    "description": "Joakim Jardenbergs #ensakidag - nio år av dagliga 5-minuters förklaringar om teknik, internet och AI, med AI-redaktionell kommentar och facit i efterhand.",
+    "publisher": {
+      "name": "Studio Jardenberg",
+      "url": "https://ensakidag.se",
+      "contact": "joakim@jardenberg.com"
+    },
+    "canonical_domain": "https://ensakidag.se",
+    "endpoint": {
+      "url": "https://ensakidag.se/api/mcp",
+      "transport": "streamable-http",
+      "auth": "none",
+      "aliases": [
+        "https://ensakidag.se/mcp"
+      ]
+    },
+    "rateLimit": {
+      "requests": 60,
+      "windowSeconds": 300,
+      "scope": "per-ip"
+    },
+    "tools": [
+      {
+        "name": "search_episodes",
+        "description": "Hybrid sökning över #ensakidag-avsnitt: semantisk (pgvector över transkript-chunks) sammanslagen med svensk fulltext via reciprocal rank fusion. Korta frågor (<=2 ord) viktas mot lexikalisk match. Returnerar rankade avsnitt med snippet, facit-betyg och kanonisk URL på ensakidag.se.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "Sökfras (svensk fulltext)."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 10
+            },
+            "year": {
+              "type": "integer",
+              "description": "Filtrera på publiceringsår."
+            },
+            "topic": {
+              "type": "string",
+              "description": "Filtrera på temaslug (se list_topics)."
+            }
+          },
+          "required": [
+            "query"
+          ]
+        }
+      },
+      {
+        "name": "get_episode",
+        "description": "Hämta ett helt avsnitt: JJ:s beskrivning och transkript, plus AI-lagret (faktaruta, 2026-uppdatering, bedömning, guldkorn, kopplingar), teman och kanonisk URL. Argumentet `number` är kanoniskt; `id` och `episode` accepteras som alias.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "number": {
+              "type": "integer",
+              "description": "Avsnittsnummer (kanoniskt). Alias: id, episode."
+            },
+            "id": {
+              "type": "integer",
+              "description": "Alias för number."
+            },
+            "episode": {
+              "type": "integer",
+              "description": "Alias för number."
+            }
+          },
+          "required": [
+            "number"
+          ]
+        }
+      },
+      {
+        "name": "list_topics",
+        "description": "Lista alla teman med slug, etikett, antal avsnitt och kanonisk URL på ensakidag.se.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        }
+      },
+      {
+        "name": "get_topic",
+        "description": "Hämta ett tema: etikett, AI-syntes, höjdpunkter och alla avsnitt kopplade till temat, med kanonisk URL.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "slug": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "slug"
+          ]
+        }
+      },
+      {
+        "name": "find_related",
+        "description": "Hitta avsnitt relaterade till ett givet avsnitt via uttryckliga kopplingar (edges) och delade teman.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "number": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "number"
+          ]
+        }
+      },
+      {
+        "name": "list_latest",
+        "description": "Lista de senaste avsnitten efter publiceringsdatum, med kanonisk URL.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 10
+            }
+          }
+        }
+      },
+      {
+        "name": "server_info",
+        "description": "Returnerar serverversion, datasetversion (datum för senaste innehållsändring), antal avsnitt/teman, schema_version och API-capabilities. Använd för att avgöra om cache eller index behöver invalideras.",
+        "inputSchema": {
+          "type": "object",
+          "properties": {}
+        }
+      }
+    ],
+    "signing": {
+      "spec": "org.jardenberg/verifiable-mcp",
+      "spec_version": "0.2.1",
+      "alg": "EdDSA",
+      "typ": "verifiable-mcp+jws",
+      "kid": "bzjZ2nlMTx8AlQCNshoHOzv8br80IP7Bhx8Myppj1AY",
+      "previous_kids": [],
+      "public_key_url": "https://ensakidag.se/.well-known/ensakidag-mcp-public-key.json",
+      "canonicalization": "RFC 8785 (JCS)",
+      "meta_key": "org.jardenberg/verifiable-mcp",
+      "signed": "wrapper { iat, payload, payload_digest, content_digest, provenance }",
+      "envelope_fields": [
+        "spec",
+        "spec_version",
+        "alg",
+        "kid",
+        "signed",
+        "jws"
+      ],
+      "provenance_fields": [
+        "server_operator",
+        "canonical_origin",
+        "canonical_url",
+        "dataset_version",
+        "last_updated",
+        "license"
+      ],
+      "note": "All security-bearing values live inside the JWS. Anything mirrored outside it is convenience-only.",
+      "content_binding": "by digest: content_digest (inside the signed wrapper) = sha256 over the exact bytes of content[0].text / contents[0].text as served",
+      "server_card_path_note": "This /.well-known/mcp.json path follows SEP-2127, which superseded SEP-1649 and settled on /.well-known/mcp.json. The dedicated key file at /.well-known/ensakidag-mcp-public-key.json remains served.",
+      "scopes": {
+        "tools/call": "payload = result data (structuredContent)",
+        "resources/read": "payload = result.contents",
+        "error": "payload = { id, error }; envelope carried in error.data[\"org.jardenberg/verifiable-mcp\"]"
+      },
+      "deprecated_v01": {
+        "field": "result.signature",
+        "signed": "tools/call structuredContent; resources/read result.contents",
+        "note": "Dual-emitted during transition; removed in v0.3."
+      },
+      "jwks": {
+        "keys": [
+          {
+            "kty": "OKP",
+            "crv": "Ed25519",
+            "x": "OHYfNWpij5NohwZdNM1BR91cG01jjJxPycaElx4677I",
+            "use": "sig",
+            "alg": "EdDSA",
+            "kid": "bzjZ2nlMTx8AlQCNshoHOzv8br80IP7Bhx8Myppj1AY"
+          }
+        ]
+      }
+    },
+    "public_key": {
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "x": "OHYfNWpij5NohwZdNM1BR91cG01jjJxPycaElx4677I",
+      "use": "sig",
+      "alg": "EdDSA",
+      "kid": "bzjZ2nlMTx8AlQCNshoHOzv8br80IP7Bhx8Myppj1AY"
+    },
+    "contact": "joakim@jardenberg.com",
+    "license": {
+      "spdx": "CC-BY-4.0",
+      "attribution": "#ensakidag av Joakim Jardenberg"
+    },
+    "policy": {
+      "usage": "read-only, public",
+      "ai_train": true,
+      "attribution_required": true,
+      "citation": "Ange #ensakidag av Joakim Jardenberg, CC BY 4.0, och länka till avsnittets URL"
+    },
+    "documentation": "https://ensakidag.se/llms.txt"
+  },
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"api\":{\"capabilities\":{\"prompts\":1,\"provenance\":1,\"related\":1,\"resources\":1,\"search\":1,\"signing\":1,\"topics\":1},\"schema_version\":1},\"dataset\":{\"available_count\":498,\"content_hash\":\"fe4a2d66994aa6e367c9a283d9d19dabe29ccc0db7cf4b322933fa3a251ffcc5\",\"dataset_version\":\"2026-07-10\",\"episode_count\":504,\"last_updated\":\"2026-07-10T14:34:49.535817+00:00\",\"topic_count\":31},\"server\":{\"build\":\"v.202608211930\",\"name\":\"ensakidag\",\"version\":\"1.0.0\"}}"
+        }
+      ],
+      "structuredContent": {
+        "server": {
+          "name": "ensakidag",
+          "version": "1.0.0",
+          "build": "v.202608211930"
+        },
+        "dataset": {
+          "dataset_version": "2026-07-10",
+          "last_updated": "2026-07-10T14:34:49.535817+00:00",
+          "episode_count": 504,
+          "available_count": 498,
+          "topic_count": 31,
+          "content_hash": "fe4a2d66994aa6e367c9a283d9d19dabe29ccc0db7cf4b322933fa3a251ffcc5"
+        },
+        "api": {
+          "schema_version": 1,
+          "capabilities": {
+            "search": 1,
+            "topics": 1,
+            "related": 1,
+            "signing": 1,
+            "provenance": 1,
+            "resources": 1,
+            "prompts": 1
+          }
+        }
+      },
+      "provenance": {
+        "canonical_origin": "https://ensakidag.se",
+        "publisher": "Studio Jardenberg",
+        "license": "CC-BY-4.0",
+        "generated_at": "2026-09-28T11:57:44.549Z",
+        "content_hash": "ae93c02ed04b7a41551d803b9b5cb54decc97d74d910d26b07fac01c5dc89af1"
+      },
+      "signature": {
+        "alg": "EdDSA",
+        "kid": "bzjZ2nlMTx8AlQCNshoHOzv8br80IP7Bhx8Myppj1AY",
+        "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6ImJ6aloybmxNVHg4QWxRQ05zaG9IT3p2OGJyODBJUDdCaHg4TXlwcGoxQVkiLCJ0eXAiOiJ2ZXJpZmlhYmxlLW1jcCtqd3MifQ.eyJhcGkiOnsiY2FwYWJpbGl0aWVzIjp7InByb21wdHMiOjEsInByb3ZlbmFuY2UiOjEsInJlbGF0ZWQiOjEsInJlc291cmNlcyI6MSwic2VhcmNoIjoxLCJzaWduaW5nIjoxLCJ0b3BpY3MiOjF9LCJzY2hlbWFfdmVyc2lvbiI6MX0sImRhdGFzZXQiOnsiYXZhaWxhYmxlX2NvdW50Ijo0OTgsImNvbnRlbnRfaGFzaCI6ImZlNGEyZDY2OTk0YWE2ZTM2N2M5YTI4M2Q5ZDE5ZGFiZTI5Y2NjMGRiN2NmNGIzMjI5MzNmYTNhMjUxZmZjYzUiLCJkYXRhc2V0X3ZlcnNpb24iOiIyMDI2LTA3LTEwIiwiZXBpc29kZV9jb3VudCI6NTA0LCJsYXN0X3VwZGF0ZWQiOiIyMDI2LTA3LTEwVDE0OjM0OjQ5LjUzNTgxNyswMDowMCIsInRvcGljX2NvdW50IjozMX0sInNlcnZlciI6eyJidWlsZCI6InYuMjAyNjA4MjExOTMwIiwibmFtZSI6ImVuc2FraWRhZyIsInZlcnNpb24iOiIxLjAuMCJ9fQ.OTvg6T7hfNszXHpiJUo2RCt3aoGv40MrcyT0M96fezP4t0zoMuTXklWfBE7cZcqPwLBkW8V503sK-tk8rU6wAw",
+        "canonicalization": "RFC 8785 (JCS)",
+        "signed": "structuredContent"
+      },
+      "_meta": {
+        "org.jardenberg/verifiable-mcp": {
+          "spec": "0.2.1",
+          "spec_version": "0.2.1",
+          "alg": "EdDSA",
+          "kid": "bzjZ2nlMTx8AlQCNshoHOzv8br80IP7Bhx8Myppj1AY",
+          "signed": "wrapper",
+          "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6ImJ6aloybmxNVHg4QWxRQ05zaG9IT3p2OGJyODBJUDdCaHg4TXlwcGoxQVkiLCJ0eXAiOiJ2ZXJpZmlhYmxlLW1jcCtqd3MifQ.eyJjb250ZW50X2RpZ2VzdCI6InNoYTI1NjphZTkzYzAyZWQwNGI3YTQxNTUxZDgwM2I5YjVjYjU0ZGVjYzk3ZDc0ZDkxMGQyNmIwN2ZhYzAxYzVkYzg5YWYxIiwiaWF0IjoxNzkwNTk2NjY0LCJwYXlsb2FkIjp7ImFwaSI6eyJjYXBhYmlsaXRpZXMiOnsicHJvbXB0cyI6MSwicHJvdmVuYW5jZSI6MSwicmVsYXRlZCI6MSwicmVzb3VyY2VzIjoxLCJzZWFyY2giOjEsInNpZ25pbmciOjEsInRvcGljcyI6MX0sInNjaGVtYV92ZXJzaW9uIjoxfSwiZGF0YXNldCI6eyJhdmFpbGFibGVfY291bnQiOjQ5OCwiY29udGVudF9oYXNoIjoiZmU0YTJkNjY5OTRhYTZlMzY3YzlhMjgzZDlkMTlkYWJlMjljY2MwZGI3Y2Y0YjMyMjkzM2ZhM2EyNTFmZmNjNSIsImRhdGFzZXRfdmVyc2lvbiI6IjIwMjYtMDctMTAiLCJlcGlzb2RlX2NvdW50Ijo1MDQsImxhc3RfdXBkYXRlZCI6IjIwMjYtMDctMTBUMTQ6MzQ6NDkuNTM1ODE3KzAwOjAwIiwidG9waWNfY291bnQiOjMxfSwic2VydmVyIjp7ImJ1aWxkIjoidi4yMDI2MDgyMTE5MzAiLCJuYW1lIjoiZW5zYWtpZGFnIiwidmVyc2lvbiI6IjEuMC4wIn19LCJwYXlsb2FkX2RpZ2VzdCI6InNoYTI1NjphZTkzYzAyZWQwNGI3YTQxNTUxZDgwM2I5YjVjYjU0ZGVjYzk3ZDc0ZDkxMGQyNmIwN2ZhYzAxYzVkYzg5YWYxIiwicHJvdmVuYW5jZSI6eyJjYW5vbmljYWxfb3JpZ2luIjoiaHR0cHM6Ly9lbnNha2lkYWcuc2UiLCJjYW5vbmljYWxfdXJsIjoiaHR0cHM6Ly9lbnNha2lkYWcuc2UiLCJkYXRhc2V0X3ZlcnNpb24iOiIyMDI2LTA3LTEwIiwiZ2VuZXJhdGVkX2F0IjoiMjAyNi0wOS0yOFQxMTo1Nzo0NC41NDlaIiwibGFzdF91cGRhdGVkIjoiMjAyNi0wNy0xMFQxNDozNDo0OS41MzU4MTcrMDA6MDAiLCJsaWNlbnNlIjoiQ0MtQlktNC4wIiwicHVibGlzaGVyIjoiU3R1ZGlvIEphcmRlbmJlcmciLCJzZXJ2ZXJfb3BlcmF0b3IiOiJTdHVkaW8gSmFyZGVuYmVyZyJ9fQ.fItUtBb9AvKIs0NKJhSJVDEDIs29moTywz1SPkcewv60e5t0sP4Pe2bc4EFv2ozTLR0JrcVmikq9hQgK4Vl7Dw"
+        }
+      }
+    }
+  }
+}

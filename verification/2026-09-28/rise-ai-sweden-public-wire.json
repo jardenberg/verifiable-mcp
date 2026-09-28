@@ -1,0 +1,162 @@
+{
+  "card": {
+    "spec": "org.jardenberg/verifiable-mcp",
+    "spec_version": "0.2.1",
+    "name": "rise-ai-sweden",
+    "version": "v202609241700",
+    "title": "RISE & AI Sweden Public MCP",
+    "documentation": "https://rise-ai-sweden.jardenberg.org/",
+    "server_card": "https://rise-ai-sweden.jardenberg.org/.well-known/mcp/server-card.json",
+    "endpoint": "https://rise-ai-sweden.jardenberg.org/api/mcp",
+    "transport": "streamable-http",
+    "authentication": {
+      "type": "none"
+    },
+    "signing": {
+      "spec": "org.jardenberg/verifiable-mcp",
+      "spec_version": "0.2.1",
+      "alg": "EdDSA",
+      "typ": "verifiable-mcp+jws",
+      "kid": "upCmqalkMBHA7ZBkcCNWakftZgIEKtGVvvvpSQL_2p8",
+      "previous_kids": [],
+      "canonicalization": "RFC 8785 (JCS)",
+      "meta_key": "org.jardenberg/verifiable-mcp",
+      "signed_scopes": [
+        "tools/call result._meta[\"org.jardenberg/verifiable-mcp\"] — wrapper { iat, payload, payload_digest, content_digest, provenance }",
+        "unknown tool — JSON-RPC error frame, envelope at error.data",
+        "JSON-RPC errors — envelope at error.data[\"org.jardenberg/verifiable-mcp\"]; wrapper payload is { id, error } with the envelope removed",
+        "tool-level isError results — wrapper payload is { isError: true, message }",
+        "tools/call result.signature + result.provenance — deprecated v0.1 siblings at the TOP LEVEL of result, never inside structuredContent (removed in v0.3)"
+      ],
+      "envelope_fields": [
+        "spec",
+        "alg",
+        "kid",
+        "signed",
+        "jws"
+      ],
+      "envelope_note": "No security-bearing values outside the JWS; verifiers trust only values recovered from the verified wrapper.",
+      "payload_digest": "sha256 over the RFC 8785 canonical payload (inside the signed wrapper)",
+      "content_binding": "content_digest (inside the signed wrapper) = sha256 over the exact served bytes of content[0].text",
+      "key_url": "https://rise-ai-sweden.jardenberg.org/.well-known/rise-ai-sweden-mcp-public-key.json",
+      "card_path_note": "This /.well-known/mcp.json path follows SEP-2127, which superseded SEP-1649 and settled the path. The dedicated key file is also served.",
+      "jwks": {
+        "keys": [
+          {
+            "kty": "OKP",
+            "crv": "Ed25519",
+            "x": "E-puWZrBTXIA3ca6pSrcFR4PMAVs3ClVMABaSKEp_2I",
+            "kid": "upCmqalkMBHA7ZBkcCNWakftZgIEKtGVvvvpSQL_2p8",
+            "alg": "EdDSA",
+            "use": "sig"
+          }
+        ]
+      }
+    },
+    "jwks": {
+      "keys": [
+        {
+          "kty": "OKP",
+          "crv": "Ed25519",
+          "x": "E-puWZrBTXIA3ca6pSrcFR4PMAVs3ClVMABaSKEp_2I",
+          "kid": "upCmqalkMBHA7ZBkcCNWakftZgIEKtGVvvvpSQL_2p8",
+          "alg": "EdDSA",
+          "use": "sig"
+        }
+      ]
+    }
+  },
+  "response": {
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"authentication\":\"none\",\"endpoint\":\"https://rise-ai-sweden.jardenberg.org/api/mcp\",\"lastUpdated\":\"2026-09-26T04:16:14.054+00:00\",\"legalBasis\":\"Indexed under the EU TDM exception (DSM directive, art. 4); excerpts served with source attribution; all content remains © its publisher\",\"name\":\"rise-ai-sweden\",\"origin\":\"https://rise-ai-sweden.jardenberg.org\",\"rateLimit\":\"60 requests / 5 minutes per IP\",\"server\":\"rise-ai-sweden.jardenberg.org\",\"serverCard\":\"https://rise-ai-sweden.jardenberg.org/.well-known/mcp.json\",\"serverOperator\":\"Studio Jardenberg\",\"spec\":\"org.jardenberg/verifiable-mcp\",\"specVersion\":\"0.2.1\",\"stats\":{\"chunks\":6855,\"documents\":2350,\"sources\":[{\"documents\":1623,\"lastUpdated\":\"2026-09-26T04:16:14.054+00:00\",\"name\":\"AI Sweden\",\"rootUrl\":\"https://www.ai.se\",\"source\":\"ai_sweden\"},{\"documents\":727,\"lastUpdated\":\"2026-09-26T04:15:43.786+00:00\",\"name\":\"RISE\",\"rootUrl\":\"https://www.ri.se\",\"source\":\"rise\"}]},\"title\":\"RISE & AI Sweden Public MCP\",\"version\":\"v202609241700\"}"
+        }
+      ],
+      "structuredContent": {
+        "name": "rise-ai-sweden",
+        "title": "RISE & AI Sweden Public MCP",
+        "server": "rise-ai-sweden.jardenberg.org",
+        "origin": "https://rise-ai-sweden.jardenberg.org",
+        "endpoint": "https://rise-ai-sweden.jardenberg.org/api/mcp",
+        "serverOperator": "Studio Jardenberg",
+        "version": "v202609241700",
+        "spec": "org.jardenberg/verifiable-mcp",
+        "specVersion": "0.2.1",
+        "serverCard": "https://rise-ai-sweden.jardenberg.org/.well-known/mcp.json",
+        "authentication": "none",
+        "rateLimit": "60 requests / 5 minutes per IP",
+        "legalBasis": "Indexed under the EU TDM exception (DSM directive, art. 4); excerpts served with source attribution; all content remains © its publisher",
+        "stats": {
+          "documents": 2350,
+          "chunks": 6855,
+          "sources": [
+            {
+              "source": "ai_sweden",
+              "name": "AI Sweden",
+              "rootUrl": "https://www.ai.se",
+              "documents": 1623,
+              "lastUpdated": "2026-09-26T04:16:14.054+00:00"
+            },
+            {
+              "source": "rise",
+              "name": "RISE",
+              "rootUrl": "https://www.ri.se",
+              "documents": 727,
+              "lastUpdated": "2026-09-26T04:15:43.786+00:00"
+            }
+          ]
+        },
+        "lastUpdated": "2026-09-26T04:16:14.054+00:00"
+      },
+      "provenance": {
+        "server_operator": "Studio Jardenberg",
+        "server": "rise-ai-sweden.jardenberg.org",
+        "publishers": [
+          {
+            "source": "ai_sweden",
+            "content_publisher": "AI Sweden",
+            "canonical_origin": "https://www.ai.se"
+          },
+          {
+            "source": "rise",
+            "content_publisher": "RISE",
+            "canonical_origin": "https://www.ri.se"
+          }
+        ],
+        "legal_basis": "Indexed under the EU TDM exception (DSM directive, art. 4); excerpts served with source attribution; all content remains © its publisher",
+        "dataset_version": "d20260928.2350",
+        "last_updated": "2026-09-26T04:16:14.054+00:00",
+        "content_publisher": [
+          "AI Sweden",
+          "RISE"
+        ],
+        "canonical_origin": [
+          "https://www.ai.se",
+          "https://www.ri.se"
+        ],
+        "content_hash": "8456ed54eb19940ae95cf53cf858018ff6585117cfc39b4db638f12324de3972",
+        "content_hash_alg": "sha256",
+        "content_hash_scope": "SHA-256 over the canonical (sorted-keys, UTF-8, no whitespace) JSON of this response object with the `provenance` key removed"
+      },
+      "signature": {
+        "alg": "EdDSA",
+        "kid": "upCmqalkMBHA7ZBkcCNWakftZgIEKtGVvvvpSQL_2p8",
+        "signed": "structuredContent",
+        "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6InVwQ21xYWxrTUJIQTdaQmtjQ05XYWtmdFpnSUVLdEdWdnZ2cFNRTF8ycDgiLCJ0eXAiOiJ2ZXJpZmlhYmxlLW1jcCtqd3MifQ.eyJhdXRoZW50aWNhdGlvbiI6Im5vbmUiLCJlbmRwb2ludCI6Imh0dHBzOi8vcmlzZS1haS1zd2VkZW4uamFyZGVuYmVyZy5vcmcvYXBpL21jcCIsImxhc3RVcGRhdGVkIjoiMjAyNi0wOS0yNlQwNDoxNjoxNC4wNTQrMDA6MDAiLCJsZWdhbEJhc2lzIjoiSW5kZXhlZCB1bmRlciB0aGUgRVUgVERNIGV4Y2VwdGlvbiAoRFNNIGRpcmVjdGl2ZSwgYXJ0LiA0KTsgZXhjZXJwdHMgc2VydmVkIHdpdGggc291cmNlIGF0dHJpYnV0aW9uOyBhbGwgY29udGVudCByZW1haW5zIMKpIGl0cyBwdWJsaXNoZXIiLCJuYW1lIjoicmlzZS1haS1zd2VkZW4iLCJvcmlnaW4iOiJodHRwczovL3Jpc2UtYWktc3dlZGVuLmphcmRlbmJlcmcub3JnIiwicHJvdmVuYW5jZSI6eyJjYW5vbmljYWxfb3JpZ2luIjpbImh0dHBzOi8vd3d3LmFpLnNlIiwiaHR0cHM6Ly93d3cucmkuc2UiXSwiY29udGVudF9oYXNoIjoiODQ1NmVkNTRlYjE5OTQwYWU5NWNmNTNjZjg1ODAxOGZmNjU4NTExN2NmYzM5YjRkYjYzOGYxMjMyNGRlMzk3MiIsImNvbnRlbnRfaGFzaF9hbGciOiJzaGEyNTYiLCJjb250ZW50X2hhc2hfc2NvcGUiOiJTSEEtMjU2IG92ZXIgdGhlIGNhbm9uaWNhbCAoc29ydGVkLWtleXMsIFVURi04LCBubyB3aGl0ZXNwYWNlKSBKU09OIG9mIHRoaXMgcmVzcG9uc2Ugb2JqZWN0IHdpdGggdGhlIGBwcm92ZW5hbmNlYCBrZXkgcmVtb3ZlZCIsImNvbnRlbnRfcHVibGlzaGVyIjpbIkFJIFN3ZWRlbiIsIlJJU0UiXSwiZGF0YXNldF92ZXJzaW9uIjoiZDIwMjYwOTI4LjIzNTAiLCJsYXN0X3VwZGF0ZWQiOiIyMDI2LTA5LTI2VDA0OjE2OjE0LjA1NCswMDowMCIsImxlZ2FsX2Jhc2lzIjoiSW5kZXhlZCB1bmRlciB0aGUgRVUgVERNIGV4Y2VwdGlvbiAoRFNNIGRpcmVjdGl2ZSwgYXJ0LiA0KTsgZXhjZXJwdHMgc2VydmVkIHdpdGggc291cmNlIGF0dHJpYnV0aW9uOyBhbGwgY29udGVudCByZW1haW5zIMKpIGl0cyBwdWJsaXNoZXIiLCJwdWJsaXNoZXJzIjpbeyJjYW5vbmljYWxfb3JpZ2luIjoiaHR0cHM6Ly93d3cuYWkuc2UiLCJjb250ZW50X3B1Ymxpc2hlciI6IkFJIFN3ZWRlbiIsInNvdXJjZSI6ImFpX3N3ZWRlbiJ9LHsiY2Fub25pY2FsX29yaWdpbiI6Imh0dHBzOi8vd3d3LnJpLnNlIiwiY29udGVudF9wdWJsaXNoZXIiOiJSSVNFIiwic291cmNlIjoicmlzZSJ9XSwic2VydmVyIjoicmlzZS1haS1zd2VkZW4uamFyZGVuYmVyZy5vcmciLCJzZXJ2ZXJfb3BlcmF0b3IiOiJTdHVkaW8gSmFyZGVuYmVyZyJ9LCJyYXRlTGltaXQiOiI2MCByZXF1ZXN0cyAvIDUgbWludXRlcyBwZXIgSVAiLCJzZXJ2ZXIiOiJyaXNlLWFpLXN3ZWRlbi5qYXJkZW5iZXJnLm9yZyIsInNlcnZlckNhcmQiOiJodHRwczovL3Jpc2UtYWktc3dlZGVuLmphcmRlbmJlcmcub3JnLy53ZWxsLWtub3duL21jcC5qc29uIiwic2VydmVyT3BlcmF0b3IiOiJTdHVkaW8gSmFyZGVuYmVyZyIsInNwZWMiOiJvcmcuamFyZGVuYmVyZy92ZXJpZmlhYmxlLW1jcCIsInNwZWNWZXJzaW9uIjoiMC4yLjEiLCJzdGF0cyI6eyJjaHVua3MiOjY4NTUsImRvY3VtZW50cyI6MjM1MCwic291cmNlcyI6W3siZG9jdW1lbnRzIjoxNjIzLCJsYXN0VXBkYXRlZCI6IjIwMjYtMDktMjZUMDQ6MTY6MTQuMDU0KzAwOjAwIiwibmFtZSI6IkFJIFN3ZWRlbiIsInJvb3RVcmwiOiJodHRwczovL3d3dy5haS5zZSIsInNvdXJjZSI6ImFpX3N3ZWRlbiJ9LHsiZG9jdW1lbnRzIjo3MjcsImxhc3RVcGRhdGVkIjoiMjAyNi0wOS0yNlQwNDoxNTo0My43ODYrMDA6MDAiLCJuYW1lIjoiUklTRSIsInJvb3RVcmwiOiJodHRwczovL3d3dy5yaS5zZSIsInNvdXJjZSI6InJpc2UifV19LCJ0aXRsZSI6IlJJU0UgJiBBSSBTd2VkZW4gUHVibGljIE1DUCIsInZlcnNpb24iOiJ2MjAyNjA5MjQxNzAwIn0.0DNgD8jxdi3yXKuW8vjG5U0R6oqw1Bqj2qs5GTZ6Cx4rALEsktDG7H9ORqcVeAsxI3y1GDadVoUr0yzTPm-NBg"
+      },
+      "_meta": {
+        "org.jardenberg/verifiable-mcp": {
+          "spec": "0.2.1",
+          "alg": "EdDSA",
+          "kid": "upCmqalkMBHA7ZBkcCNWakftZgIEKtGVvvvpSQL_2p8",
+          "signed": "wrapper",
+          "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6InVwQ21xYWxrTUJIQTdaQmtjQ05XYWtmdFpnSUVLdEdWdnZ2cFNRTF8ycDgiLCJ0eXAiOiJ2ZXJpZmlhYmxlLW1jcCtqd3MifQ.eyJjb250ZW50X2RpZ2VzdCI6InNoYTI1Njo4NDU2ZWQ1NGViMTk5NDBhZTk1Y2Y1M2NmODU4MDE4ZmY2NTg1MTE3Y2ZjMzliNGRiNjM4ZjEyMzI0ZGUzOTcyIiwiaWF0IjoxNzkwNTk2NjY2LCJwYXlsb2FkIjp7ImF1dGhlbnRpY2F0aW9uIjoibm9uZSIsImVuZHBvaW50IjoiaHR0cHM6Ly9yaXNlLWFpLXN3ZWRlbi5qYXJkZW5iZXJnLm9yZy9hcGkvbWNwIiwibGFzdFVwZGF0ZWQiOiIyMDI2LTA5LTI2VDA0OjE2OjE0LjA1NCswMDowMCIsImxlZ2FsQmFzaXMiOiJJbmRleGVkIHVuZGVyIHRoZSBFVSBURE0gZXhjZXB0aW9uIChEU00gZGlyZWN0aXZlLCBhcnQuIDQpOyBleGNlcnB0cyBzZXJ2ZWQgd2l0aCBzb3VyY2UgYXR0cmlidXRpb247IGFsbCBjb250ZW50IHJlbWFpbnMgwqkgaXRzIHB1Ymxpc2hlciIsIm5hbWUiOiJyaXNlLWFpLXN3ZWRlbiIsIm9yaWdpbiI6Imh0dHBzOi8vcmlzZS1haS1zd2VkZW4uamFyZGVuYmVyZy5vcmciLCJyYXRlTGltaXQiOiI2MCByZXF1ZXN0cyAvIDUgbWludXRlcyBwZXIgSVAiLCJzZXJ2ZXIiOiJyaXNlLWFpLXN3ZWRlbi5qYXJkZW5iZXJnLm9yZyIsInNlcnZlckNhcmQiOiJodHRwczovL3Jpc2UtYWktc3dlZGVuLmphcmRlbmJlcmcub3JnLy53ZWxsLWtub3duL21jcC5qc29uIiwic2VydmVyT3BlcmF0b3IiOiJTdHVkaW8gSmFyZGVuYmVyZyIsInNwZWMiOiJvcmcuamFyZGVuYmVyZy92ZXJpZmlhYmxlLW1jcCIsInNwZWNWZXJzaW9uIjoiMC4yLjEiLCJzdGF0cyI6eyJjaHVua3MiOjY4NTUsImRvY3VtZW50cyI6MjM1MCwic291cmNlcyI6W3siZG9jdW1lbnRzIjoxNjIzLCJsYXN0VXBkYXRlZCI6IjIwMjYtMDktMjZUMDQ6MTY6MTQuMDU0KzAwOjAwIiwibmFtZSI6IkFJIFN3ZWRlbiIsInJvb3RVcmwiOiJodHRwczovL3d3dy5haS5zZSIsInNvdXJjZSI6ImFpX3N3ZWRlbiJ9LHsiZG9jdW1lbnRzIjo3MjcsImxhc3RVcGRhdGVkIjoiMjAyNi0wOS0yNlQwNDoxNTo0My43ODYrMDA6MDAiLCJuYW1lIjoiUklTRSIsInJvb3RVcmwiOiJodHRwczovL3d3dy5yaS5zZSIsInNvdXJjZSI6InJpc2UifV19LCJ0aXRsZSI6IlJJU0UgJiBBSSBTd2VkZW4gUHVibGljIE1DUCIsInZlcnNpb24iOiJ2MjAyNjA5MjQxNzAwIn0sInBheWxvYWRfZGlnZXN0Ijoic2hhMjU2Ojg0NTZlZDU0ZWIxOTk0MGFlOTVjZjUzY2Y4NTgwMThmZjY1ODUxMTdjZmMzOWI0ZGI2MzhmMTIzMjRkZTM5NzIiLCJwcm92ZW5hbmNlIjp7ImRhdGFzZXRfdmVyc2lvbiI6ImQyMDI2MDkyOC4yMzUwIiwibGFzdF91cGRhdGVkIjoiMjAyNi0wOS0yNlQwNDoxNjoxNC4wNTQrMDA6MDAiLCJsZWdhbF9iYXNpcyI6IkluZGV4ZWQgdW5kZXIgdGhlIEVVIFRETSBleGNlcHRpb24gKERTTSBkaXJlY3RpdmUsIGFydC4gNCk7IGV4Y2VycHRzIHNlcnZlZCB3aXRoIHNvdXJjZSBhdHRyaWJ1dGlvbjsgYWxsIGNvbnRlbnQgcmVtYWlucyDCqSBpdHMgcHVibGlzaGVyIiwicHVibGlzaGVycyI6W3siY2Fub25pY2FsX29yaWdpbiI6Imh0dHBzOi8vd3d3LmFpLnNlIiwiY29udGVudF9wdWJsaXNoZXIiOiJBSSBTd2VkZW4iLCJzb3VyY2UiOiJhaV9zd2VkZW4ifSx7ImNhbm9uaWNhbF9vcmlnaW4iOiJodHRwczovL3d3dy5yaS5zZSIsImNvbnRlbnRfcHVibGlzaGVyIjoiUklTRSIsInNvdXJjZSI6InJpc2UifV0sInNlcnZlciI6InJpc2UtYWktc3dlZGVuLmphcmRlbmJlcmcub3JnIiwic2VydmVyX29wZXJhdG9yIjoiU3R1ZGlvIEphcmRlbmJlcmcifX0.eacsKJd8sTc52KZqM5SjFOiK3cF90FGojOtRdSIkRW0MY2dBcYGAdnH-Lxv0umWfX3r-UXcgBZ-LvIje8aVVBA"
+        }
+      }
+    },
+    "jsonrpc": "2.0",
+    "id": 1
+  }
+}

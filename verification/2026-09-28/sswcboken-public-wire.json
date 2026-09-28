@@ -1,0 +1,176 @@
+{
+  "card": {
+    "name": "drommarna-fran-tjaro",
+    "title": "Drömmarna från Tjärö",
+    "description": "SSWC-boken 2010 (red. Mattias Boström): 181 texter från Sweden Social Web Camp på Tjärö, återutgivna 2026 som ett signerat, agent-läsbart arkiv. Innehåller DÅ/IDAG-dossierer för 183 författare, 181 drömmar bedömda mot 2026, 9 teman, 178 AI-brev från framtida jag, samt 41 författarfigurer skannade ur boken.",
+    "publisher": "Drömmarna från Tjärö / Studio Jardenberg",
+    "canonical_origin": "https://sswcboken.se",
+    "endpoint": "https://sswcboken.se/api/mcp",
+    "endpoint_alias": "https://sswcboken.se/mcp",
+    "transport": "streamable-http",
+    "protocol_version": "2025-06-18",
+    "license_posture": "Per-författare upphovsrätt 2010 · återpublicerad i delningens anda · INTE Creative Commons · invändningar tas emot på joakim@jardenberg.com och rättas inom 24 timmar.",
+    "contact": "joakim@jardenberg.com",
+    "signing": {
+      "spec": "org.jardenberg/verifiable-mcp",
+      "alg": "EdDSA",
+      "kid": "ln2Y6OsJnhuUnXiHeKOiLTCKIlJOpk9PwDA3EVpYZp4",
+      "previous_kids": [
+        "ln2Y6OsJnhuUnXiH"
+      ],
+      "public_key_url": "https://sswcboken.se/.well-known/sswcboken-mcp-public-key.json",
+      "canonicalization": "RFC 8785 (JCS)",
+      "signed": "wrapper",
+      "wrapper_shape": "{ iat: <unix seconds>, payload: <result data>, payload_digest: \"sha256:<hex over RFC 8785 canonical payload>\", content_digest: \"sha256:<hex over the exact bytes of the text arm as served>\", provenance: {...} }",
+      "meta_key": "org.jardenberg/verifiable-mcp",
+      "envelope": {
+        "location": "result._meta[\"org.jardenberg/verifiable-mcp\"] on tools/call and resources/read; error.data[\"org.jardenberg/verifiable-mcp\"] on JSON-RPC error responses",
+        "fields": [
+          "spec",
+          "spec_version",
+          "alg",
+          "kid",
+          "signed",
+          "jws"
+        ],
+        "note": "Both digests live INSIDE the signed wrapper. Any value mirrored outside the JWS is convenience-only and never security-bearing."
+      },
+      "content_binding": "By digest: hash the exact bytes of the text arm as served (tools/call result.content[0].text, resources/read result.contents[0].text) and compare with content_digest inside the signed wrapper.",
+      "error_payload_shape": "{ id: <request id>, error: { code, message, data? } }; error wrappers carry iat + payload + payload_digest + provenance only — content_digest is omitted because no text arm is served for errors. Invalid arguments use JSON-RPC code -32602.",
+      "server_card_path_note": "The /.well-known/mcp.json server-card path follows SEP-2127, which is not yet frozen upstream — the path may change. Both the card and the dedicated key file are served.",
+      "response_format": "JWS compact (RFC 7515), protected header {alg:\"EdDSA\", kid, typ:\"verifiable-mcp+jws\"}, over the RFC 8785 canonical wrapper.",
+      "deprecated": {
+        "signature": "v0.1 `signature` + `provenance` sibling fields on result are still emitted for transition and will be removed in v0.3."
+      },
+      "spec_version": "0.2.1",
+      "typ": "verifiable-mcp+jws",
+      "jwks": {
+        "keys": [
+          {
+            "kty": "OKP",
+            "crv": "Ed25519",
+            "x": "_XTbAAUHZSw9umaO-adqh11fn2hkts8EKOQ9-eFAiyA",
+            "kid": "ln2Y6OsJnhuUnXiHeKOiLTCKIlJOpk9PwDA3EVpYZp4",
+            "alg": "EdDSA",
+            "use": "sig"
+          },
+          {
+            "kty": "OKP",
+            "crv": "Ed25519",
+            "x": "_XTbAAUHZSw9umaO-adqh11fn2hkts8EKOQ9-eFAiyA",
+            "kid": "ln2Y6OsJnhuUnXiH",
+            "alg": "EdDSA",
+            "use": "sig"
+          }
+        ]
+      },
+      "structured_content": "structuredContent is byte-identical to the signed wrapper.payload (RFC 8785). The deprecated v0.1 provenance and signature objects are top-level siblings of result, never inside structuredContent.",
+      "provenance_fields": [
+        "server_operator",
+        "publisher",
+        "canonical_origin",
+        "canonical_url",
+        "dataset_version",
+        "last_updated",
+        "rights"
+      ]
+    },
+    "tools": [
+      "server_info",
+      "search_texter",
+      "get_text",
+      "list_texter",
+      "get_forfattare",
+      "list_forfattare",
+      "list_drommar",
+      "list_teman",
+      "get_tema"
+    ],
+    "resources": [
+      "sswc://text/{nr}",
+      "sswc://forfattare/{slug}"
+    ],
+    "public_key_url": "https://sswcboken.se/.well-known/sswcboken-mcp-public-key.json",
+    "rights": "per author; not Creative Commons"
+  },
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"book\":{\"editor\":\"Mattias Boström\",\"event\":\"Sweden Social Web Camp, Tjärö 13–15 augusti 2010\",\"isbn\":\"978-91-979089-0-0\",\"pages\":591,\"pdf_url\":\"https://www.mattiasbostrom.se/sswcboken2010.pdf\",\"title\":\"SSWC-boken 2010\"},\"counts\":{\"drommar\":181,\"forfattare\":184,\"svar_ai_older_self\":178,\"svar_author_reply_2026\":0,\"svar_total\":178,\"teman\":9,\"texter\":181,\"total_word_count\":118276},\"dataset\":\"sswc-boken-2010\",\"description\":\"SSWC-boken 2010 (red. Mattias Boström): 181 texter från Sweden Social Web Camp på Tjärö, återutgivna 2026 som ett signerat, agent-läsbart arkiv med DÅ/IDAG-dossierer, drömscoreboard, 9 teman, AI-brev från framtiden, och författarfigurer från boken.\",\"figure_marker_syntax\":\"Figurer i body är markerade som ![caption](fig:NR-K) där NR är textens nr och K är index (1-baserat). Mappas till absolut URL https://sswcboken.se/figurer/fig-NR-K.png.\",\"license_posture\":\"Per-författare upphovsrätt 2010 · återpublicerad i delningens anda · INTE Creative Commons · invändningar tas emot på joakim@jardenberg.com och rättas inom 24 timmar.\",\"name\":\"drommarna-fran-tjaro\",\"signing\":{\"alg\":\"EdDSA\",\"canonicalization\":\"RFC 8785 (JCS)\",\"deprecated\":\"v0.1 `signature`/`provenance` sibling fields are still emitted; removed in v0.3.\",\"envelope_note\":\"Endast { spec, spec_version, alg, kid, signed, jws } ligger i _meta. Alla speglade värden utanför JWS:en är bekvämlighet, aldrig säkerhetsbärande. Fel bär kuvertet i error.data[\\\"org.jardenberg/verifiable-mcp\\\"].\",\"meta_key\":\"org.jardenberg/verifiable-mcp\",\"public_key_url\":\"https://sswcboken.se/.well-known/sswcboken-mcp-public-key.json\",\"server_card_path_note\":\"Server-card-sökvägen /.well-known/mcp.json följer SEP-2127, som ännu inte är fryst uppströms — sökvägen kan ändras. Både kortet och den dedikerade nyckelfilen serveras.\",\"server_card_url\":\"https://sswcboken.se/.well-known/mcp.json\",\"signed\":\"wrapper\",\"spec\":\"org.jardenberg/verifiable-mcp\",\"spec_version\":\"0.2.1\",\"structured_content_note\":\"structuredContent är byte-identisk med wrapper.payload (RFC 8785). Deprecerad v0.1-provenance och -signatur ligger som syskonfält på result, aldrig inuti structuredContent.\",\"typ\":\"verifiable-mcp+jws\",\"wrapper_shape\":\"{ iat, payload, payload_digest, content_digest, provenance }\"},\"site_launch\":\"2026-08-13\",\"version\":\"v.202608211537\"}"
+        }
+      ],
+      "structuredContent": {
+        "name": "drommarna-fran-tjaro",
+        "version": "v.202608211537",
+        "description": "SSWC-boken 2010 (red. Mattias Boström): 181 texter från Sweden Social Web Camp på Tjärö, återutgivna 2026 som ett signerat, agent-läsbart arkiv med DÅ/IDAG-dossierer, drömscoreboard, 9 teman, AI-brev från framtiden, och författarfigurer från boken.",
+        "dataset": "sswc-boken-2010",
+        "counts": {
+          "texter": 181,
+          "forfattare": 184,
+          "drommar": 181,
+          "teman": 9,
+          "svar_total": 178,
+          "svar_ai_older_self": 178,
+          "svar_author_reply_2026": 0,
+          "total_word_count": 118276
+        },
+        "book": {
+          "title": "SSWC-boken 2010",
+          "editor": "Mattias Boström",
+          "isbn": "978-91-979089-0-0",
+          "pages": 591,
+          "event": "Sweden Social Web Camp, Tjärö 13–15 augusti 2010",
+          "pdf_url": "https://www.mattiasbostrom.se/sswcboken2010.pdf"
+        },
+        "site_launch": "2026-08-13",
+        "figure_marker_syntax": "Figurer i body är markerade som ![caption](fig:NR-K) där NR är textens nr och K är index (1-baserat). Mappas till absolut URL https://sswcboken.se/figurer/fig-NR-K.png.",
+        "license_posture": "Per-författare upphovsrätt 2010 · återpublicerad i delningens anda · INTE Creative Commons · invändningar tas emot på joakim@jardenberg.com och rättas inom 24 timmar.",
+        "signing": {
+          "spec": "org.jardenberg/verifiable-mcp",
+          "spec_version": "0.2.1",
+          "alg": "EdDSA",
+          "typ": "verifiable-mcp+jws",
+          "signed": "wrapper",
+          "meta_key": "org.jardenberg/verifiable-mcp",
+          "wrapper_shape": "{ iat, payload, payload_digest, content_digest, provenance }",
+          "structured_content_note": "structuredContent är byte-identisk med wrapper.payload (RFC 8785). Deprecerad v0.1-provenance och -signatur ligger som syskonfält på result, aldrig inuti structuredContent.",
+          "public_key_url": "https://sswcboken.se/.well-known/sswcboken-mcp-public-key.json",
+          "server_card_url": "https://sswcboken.se/.well-known/mcp.json",
+          "server_card_path_note": "Server-card-sökvägen /.well-known/mcp.json följer SEP-2127, som ännu inte är fryst uppströms — sökvägen kan ändras. Både kortet och den dedikerade nyckelfilen serveras.",
+          "canonicalization": "RFC 8785 (JCS)",
+          "envelope_note": "Endast { spec, spec_version, alg, kid, signed, jws } ligger i _meta. Alla speglade värden utanför JWS:en är bekvämlighet, aldrig säkerhetsbärande. Fel bär kuvertet i error.data[\"org.jardenberg/verifiable-mcp\"].",
+          "deprecated": "v0.1 `signature`/`provenance` sibling fields are still emitted; removed in v0.3."
+        }
+      },
+      "provenance": {
+        "canonical_origin": "https://sswcboken.se",
+        "publisher": "Drömmarna från Tjärö / Studio Jardenberg",
+        "canonical_url": "https://sswcboken.se",
+        "rights": "per author; not Creative Commons",
+        "last_updated": "2026-07-20",
+        "content_hash": "sha256:d021a698c9aa186791f69c0d4a1ed9d5b6c0992256a41df7f9a31d5ad6b3d2e3"
+      },
+      "signature": {
+        "alg": "EdDSA",
+        "kid": "ln2Y6OsJnhuUnXiHeKOiLTCKIlJOpk9PwDA3EVpYZp4",
+        "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6ImxuMlk2T3NKbmh1VW5YaUhlS09pTFRDS0lsSk9wazlQd0RBM0VWcFlacDQiLCJ0eXAiOiJ2ZXJpZmlhYmxlLW1jcCtqd3MifQ.eyJib29rIjp7ImVkaXRvciI6Ik1hdHRpYXMgQm9zdHLDtm0iLCJldmVudCI6IlN3ZWRlbiBTb2NpYWwgV2ViIENhbXAsIFRqw6Ryw7YgMTPigJMxNSBhdWd1c3RpIDIwMTAiLCJpc2JuIjoiOTc4LTkxLTk3OTA4OS0wLTAiLCJwYWdlcyI6NTkxLCJwZGZfdXJsIjoiaHR0cHM6Ly93d3cubWF0dGlhc2Jvc3Ryb20uc2Uvc3N3Y2Jva2VuMjAxMC5wZGYiLCJ0aXRsZSI6IlNTV0MtYm9rZW4gMjAxMCJ9LCJjb3VudHMiOnsiZHJvbW1hciI6MTgxLCJmb3JmYXR0YXJlIjoxODQsInN2YXJfYWlfb2xkZXJfc2VsZiI6MTc4LCJzdmFyX2F1dGhvcl9yZXBseV8yMDI2IjowLCJzdmFyX3RvdGFsIjoxNzgsInRlbWFuIjo5LCJ0ZXh0ZXIiOjE4MSwidG90YWxfd29yZF9jb3VudCI6MTE4Mjc2fSwiZGF0YXNldCI6InNzd2MtYm9rZW4tMjAxMCIsImRlc2NyaXB0aW9uIjoiU1NXQy1ib2tlbiAyMDEwIChyZWQuIE1hdHRpYXMgQm9zdHLDtm0pOiAxODEgdGV4dGVyIGZyw6VuIFN3ZWRlbiBTb2NpYWwgV2ViIENhbXAgcMOlIFRqw6Ryw7YsIMOldGVydXRnaXZuYSAyMDI2IHNvbSBldHQgc2lnbmVyYXQsIGFnZW50LWzDpHNiYXJ0IGFya2l2IG1lZCBEw4UvSURBRy1kb3NzaWVyZXIsIGRyw7Ztc2NvcmVib2FyZCwgOSB0ZW1hbiwgQUktYnJldiBmcsOlbiBmcmFtdGlkZW4sIG9jaCBmw7ZyZmF0dGFyZmlndXJlciBmcsOlbiBib2tlbi4iLCJmaWd1cmVfbWFya2VyX3N5bnRheCI6IkZpZ3VyZXIgaSBib2R5IMOkciBtYXJrZXJhZGUgc29tICFbY2FwdGlvbl0oZmlnOk5SLUspIGTDpHIgTlIgw6RyIHRleHRlbnMgbnIgb2NoIEsgw6RyIGluZGV4ICgxLWJhc2VyYXQpLiBNYXBwYXMgdGlsbCBhYnNvbHV0IFVSTCBodHRwczovL3Nzd2Nib2tlbi5zZS9maWd1cmVyL2ZpZy1OUi1LLnBuZy4iLCJsaWNlbnNlX3Bvc3R1cmUiOiJQZXItZsO2cmZhdHRhcmUgdXBwaG92c3LDpHR0IDIwMTAgwrcgw6V0ZXJwdWJsaWNlcmFkIGkgZGVsbmluZ2VucyBhbmRhIMK3IElOVEUgQ3JlYXRpdmUgQ29tbW9ucyDCtyBpbnbDpG5kbmluZ2FyIHRhcyBlbW90IHDDpSBqb2FraW1AamFyZGVuYmVyZy5jb20gb2NoIHLDpHR0YXMgaW5vbSAyNCB0aW1tYXIuIiwibmFtZSI6ImRyb21tYXJuYS1mcmFuLXRqYXJvIiwicHJvdmVuYW5jZSI6eyJjYW5vbmljYWxfb3JpZ2luIjoiaHR0cHM6Ly9zc3djYm9rZW4uc2UiLCJjYW5vbmljYWxfdXJsIjoiaHR0cHM6Ly9zc3djYm9rZW4uc2UiLCJjb250ZW50X2hhc2giOiJzaGEyNTY6ZDAyMWE2OThjOWFhMTg2NzkxZjY5YzBkNGExZWQ5ZDViNmMwOTkyMjU2YTQxZGY3ZjlhMzFkNWFkNmIzZDJlMyIsImxhc3RfdXBkYXRlZCI6IjIwMjYtMDctMjAiLCJwdWJsaXNoZXIiOiJEcsO2bW1hcm5hIGZyw6VuIFRqw6Ryw7YgLyBTdHVkaW8gSmFyZGVuYmVyZyIsInJpZ2h0cyI6InBlciBhdXRob3I7IG5vdCBDcmVhdGl2ZSBDb21tb25zIn0sInNpZ25pbmciOnsiYWxnIjoiRWREU0EiLCJjYW5vbmljYWxpemF0aW9uIjoiUkZDIDg3ODUgKEpDUykiLCJkZXByZWNhdGVkIjoidjAuMSBgc2lnbmF0dXJlYC9gcHJvdmVuYW5jZWAgc2libGluZyBmaWVsZHMgYXJlIHN0aWxsIGVtaXR0ZWQ7IHJlbW92ZWQgaW4gdjAuMy4iLCJlbnZlbG9wZV9ub3RlIjoiRW5kYXN0IHsgc3BlYywgc3BlY192ZXJzaW9uLCBhbGcsIGtpZCwgc2lnbmVkLCBqd3MgfSBsaWdnZXIgaSBfbWV0YS4gQWxsYSBzcGVnbGFkZSB2w6RyZGVuIHV0YW5mw7ZyIEpXUzplbiDDpHIgYmVrdsOkbWxpZ2hldCwgYWxkcmlnIHPDpGtlcmhldHNiw6RyYW5kZS4gRmVsIGLDpHIga3V2ZXJ0ZXQgaSBlcnJvci5kYXRhW1wib3JnLmphcmRlbmJlcmcvdmVyaWZpYWJsZS1tY3BcIl0uIiwibWV0YV9rZXkiOiJvcmcuamFyZGVuYmVyZy92ZXJpZmlhYmxlLW1jcCIsInB1YmxpY19rZXlfdXJsIjoiaHR0cHM6Ly9zc3djYm9rZW4uc2UvLndlbGwta25vd24vc3N3Y2Jva2VuLW1jcC1wdWJsaWMta2V5Lmpzb24iLCJzZXJ2ZXJfY2FyZF9wYXRoX25vdGUiOiJTZXJ2ZXItY2FyZC1zw7ZrdsOkZ2VuIC8ud2VsbC1rbm93bi9tY3AuanNvbiBmw7ZsamVyIFNFUC0yMTI3LCBzb20gw6RubnUgaW50ZSDDpHIgZnJ5c3QgdXBwc3Ryw7ZtcyDigJQgc8O2a3bDpGdlbiBrYW4gw6RuZHJhcy4gQsOlZGUga29ydGV0IG9jaCBkZW4gZGVkaWtlcmFkZSBueWNrZWxmaWxlbiBzZXJ2ZXJhcy4iLCJzZXJ2ZXJfY2FyZF91cmwiOiJodHRwczovL3Nzd2Nib2tlbi5zZS8ud2VsbC1rbm93bi9tY3AuanNvbiIsInNpZ25lZCI6IndyYXBwZXIiLCJzcGVjIjoib3JnLmphcmRlbmJlcmcvdmVyaWZpYWJsZS1tY3AiLCJzcGVjX3ZlcnNpb24iOiIwLjIuMSIsInN0cnVjdHVyZWRfY29udGVudF9ub3RlIjoic3RydWN0dXJlZENvbnRlbnQgw6RyIGJ5dGUtaWRlbnRpc2sgbWVkIHdyYXBwZXIucGF5bG9hZCAoUkZDIDg3ODUpLiBEZXByZWNlcmFkIHYwLjEtcHJvdmVuYW5jZSBvY2ggLXNpZ25hdHVyIGxpZ2dlciBzb20gc3lza29uZsOkbHQgcMOlIHJlc3VsdCwgYWxkcmlnIGludXRpIHN0cnVjdHVyZWRDb250ZW50LiIsInR5cCI6InZlcmlmaWFibGUtbWNwK2p3cyIsIndyYXBwZXJfc2hhcGUiOiJ7IGlhdCwgcGF5bG9hZCwgcGF5bG9hZF9kaWdlc3QsIGNvbnRlbnRfZGlnZXN0LCBwcm92ZW5hbmNlIH0ifSwic2l0ZV9sYXVuY2giOiIyMDI2LTA4LTEzIiwidmVyc2lvbiI6InYuMjAyNjA4MjExNTM3In0.VZY6GFdGw05j4HFZxDciBL2yg3X0xocGwKTdWgxE9VfwEMOTytsANnsiWaqKD0t_9PfaOsSNwOTqdG1CoqdJAA",
+        "signed": "structuredContent",
+        "canonicalization": "RFC 8785 (JCS)"
+      },
+      "_meta": {
+        "org.jardenberg/verifiable-mcp": {
+          "spec": "0.2.1",
+          "spec_version": "0.2.1",
+          "alg": "EdDSA",
+          "kid": "ln2Y6OsJnhuUnXiHeKOiLTCKIlJOpk9PwDA3EVpYZp4",
+          "signed": "wrapper",
+          "jws": "eyJhbGciOiJFZERTQSIsImtpZCI6ImxuMlk2T3NKbmh1VW5YaUhlS09pTFRDS0lsSk9wazlQd0RBM0VWcFlacDQiLCJ0eXAiOiJ2ZXJpZmlhYmxlLW1jcCtqd3MifQ.eyJjb250ZW50X2RpZ2VzdCI6InNoYTI1NjpkMDIxYTY5OGM5YWExODY3OTFmNjljMGQ0YTFlZDlkNWI2YzA5OTIyNTZhNDFkZjdmOWEzMWQ1YWQ2YjNkMmUzIiwiaWF0IjoxNzkwNTk2NjY0LCJwYXlsb2FkIjp7ImJvb2siOnsiZWRpdG9yIjoiTWF0dGlhcyBCb3N0csO2bSIsImV2ZW50IjoiU3dlZGVuIFNvY2lhbCBXZWIgQ2FtcCwgVGrDpHLDtiAxM-KAkzE1IGF1Z3VzdGkgMjAxMCIsImlzYm4iOiI5NzgtOTEtOTc5MDg5LTAtMCIsInBhZ2VzIjo1OTEsInBkZl91cmwiOiJodHRwczovL3d3dy5tYXR0aWFzYm9zdHJvbS5zZS9zc3djYm9rZW4yMDEwLnBkZiIsInRpdGxlIjoiU1NXQy1ib2tlbiAyMDEwIn0sImNvdW50cyI6eyJkcm9tbWFyIjoxODEsImZvcmZhdHRhcmUiOjE4NCwic3Zhcl9haV9vbGRlcl9zZWxmIjoxNzgsInN2YXJfYXV0aG9yX3JlcGx5XzIwMjYiOjAsInN2YXJfdG90YWwiOjE3OCwidGVtYW4iOjksInRleHRlciI6MTgxLCJ0b3RhbF93b3JkX2NvdW50IjoxMTgyNzZ9LCJkYXRhc2V0Ijoic3N3Yy1ib2tlbi0yMDEwIiwiZGVzY3JpcHRpb24iOiJTU1dDLWJva2VuIDIwMTAgKHJlZC4gTWF0dGlhcyBCb3N0csO2bSk6IDE4MSB0ZXh0ZXIgZnLDpW4gU3dlZGVuIFNvY2lhbCBXZWIgQ2FtcCBww6UgVGrDpHLDtiwgw6V0ZXJ1dGdpdm5hIDIwMjYgc29tIGV0dCBzaWduZXJhdCwgYWdlbnQtbMOkc2JhcnQgYXJraXYgbWVkIETDhS9JREFHLWRvc3NpZXJlciwgZHLDtm1zY29yZWJvYXJkLCA5IHRlbWFuLCBBSS1icmV2IGZyw6VuIGZyYW10aWRlbiwgb2NoIGbDtnJmYXR0YXJmaWd1cmVyIGZyw6VuIGJva2VuLiIsImZpZ3VyZV9tYXJrZXJfc3ludGF4IjoiRmlndXJlciBpIGJvZHkgw6RyIG1hcmtlcmFkZSBzb20gIVtjYXB0aW9uXShmaWc6TlItSykgZMOkciBOUiDDpHIgdGV4dGVucyBuciBvY2ggSyDDpHIgaW5kZXggKDEtYmFzZXJhdCkuIE1hcHBhcyB0aWxsIGFic29sdXQgVVJMIGh0dHBzOi8vc3N3Y2Jva2VuLnNlL2ZpZ3VyZXIvZmlnLU5SLUsucG5nLiIsImxpY2Vuc2VfcG9zdHVyZSI6IlBlci1mw7ZyZmF0dGFyZSB1cHBob3ZzcsOkdHQgMjAxMCDCtyDDpXRlcnB1YmxpY2VyYWQgaSBkZWxuaW5nZW5zIGFuZGEgwrcgSU5URSBDcmVhdGl2ZSBDb21tb25zIMK3IGludsOkbmRuaW5nYXIgdGFzIGVtb3QgcMOlIGpvYWtpbUBqYXJkZW5iZXJnLmNvbSBvY2ggcsOkdHRhcyBpbm9tIDI0IHRpbW1hci4iLCJuYW1lIjoiZHJvbW1hcm5hLWZyYW4tdGphcm8iLCJzaWduaW5nIjp7ImFsZyI6IkVkRFNBIiwiY2Fub25pY2FsaXphdGlvbiI6IlJGQyA4Nzg1IChKQ1MpIiwiZGVwcmVjYXRlZCI6InYwLjEgYHNpZ25hdHVyZWAvYHByb3ZlbmFuY2VgIHNpYmxpbmcgZmllbGRzIGFyZSBzdGlsbCBlbWl0dGVkOyByZW1vdmVkIGluIHYwLjMuIiwiZW52ZWxvcGVfbm90ZSI6IkVuZGFzdCB7IHNwZWMsIHNwZWNfdmVyc2lvbiwgYWxnLCBraWQsIHNpZ25lZCwgandzIH0gbGlnZ2VyIGkgX21ldGEuIEFsbGEgc3BlZ2xhZGUgdsOkcmRlbiB1dGFuZsO2ciBKV1M6ZW4gw6RyIGJla3bDpG1saWdoZXQsIGFsZHJpZyBzw6RrZXJoZXRzYsOkcmFuZGUuIEZlbCBiw6RyIGt1dmVydGV0IGkgZXJyb3IuZGF0YVtcIm9yZy5qYXJkZW5iZXJnL3ZlcmlmaWFibGUtbWNwXCJdLiIsIm1ldGFfa2V5Ijoib3JnLmphcmRlbmJlcmcvdmVyaWZpYWJsZS1tY3AiLCJwdWJsaWNfa2V5X3VybCI6Imh0dHBzOi8vc3N3Y2Jva2VuLnNlLy53ZWxsLWtub3duL3Nzd2Nib2tlbi1tY3AtcHVibGljLWtleS5qc29uIiwic2VydmVyX2NhcmRfcGF0aF9ub3RlIjoiU2VydmVyLWNhcmQtc8O2a3bDpGdlbiAvLndlbGwta25vd24vbWNwLmpzb24gZsO2bGplciBTRVAtMjEyNywgc29tIMOkbm51IGludGUgw6RyIGZyeXN0IHVwcHN0csO2bXMg4oCUIHPDtmt2w6RnZW4ga2FuIMOkbmRyYXMuIELDpWRlIGtvcnRldCBvY2ggZGVuIGRlZGlrZXJhZGUgbnlja2VsZmlsZW4gc2VydmVyYXMuIiwic2VydmVyX2NhcmRfdXJsIjoiaHR0cHM6Ly9zc3djYm9rZW4uc2UvLndlbGwta25vd24vbWNwLmpzb24iLCJzaWduZWQiOiJ3cmFwcGVyIiwic3BlYyI6Im9yZy5qYXJkZW5iZXJnL3ZlcmlmaWFibGUtbWNwIiwic3BlY192ZXJzaW9uIjoiMC4yLjEiLCJzdHJ1Y3R1cmVkX2NvbnRlbnRfbm90ZSI6InN0cnVjdHVyZWRDb250ZW50IMOkciBieXRlLWlkZW50aXNrIG1lZCB3cmFwcGVyLnBheWxvYWQgKFJGQyA4Nzg1KS4gRGVwcmVjZXJhZCB2MC4xLXByb3ZlbmFuY2Ugb2NoIC1zaWduYXR1ciBsaWdnZXIgc29tIHN5c2tvbmbDpGx0IHDDpSByZXN1bHQsIGFsZHJpZyBpbnV0aSBzdHJ1Y3R1cmVkQ29udGVudC4iLCJ0eXAiOiJ2ZXJpZmlhYmxlLW1jcCtqd3MiLCJ3cmFwcGVyX3NoYXBlIjoieyBpYXQsIHBheWxvYWQsIHBheWxvYWRfZGlnZXN0LCBjb250ZW50X2RpZ2VzdCwgcHJvdmVuYW5jZSB9In0sInNpdGVfbGF1bmNoIjoiMjAyNi0wOC0xMyIsInZlcnNpb24iOiJ2LjIwMjYwODIxMTUzNyJ9LCJwYXlsb2FkX2RpZ2VzdCI6InNoYTI1NjpkMDIxYTY5OGM5YWExODY3OTFmNjljMGQ0YTFlZDlkNWI2YzA5OTIyNTZhNDFkZjdmOWEzMWQ1YWQ2YjNkMmUzIiwicHJvdmVuYW5jZSI6eyJjYW5vbmljYWxfb3JpZ2luIjoiaHR0cHM6Ly9zc3djYm9rZW4uc2UiLCJjYW5vbmljYWxfdXJsIjoiaHR0cHM6Ly9zc3djYm9rZW4uc2UiLCJkYXRhc2V0X3ZlcnNpb24iOiJzc3djLWJva2VuLTIwMTBAMjAyNi0wNy0yMCt2LjIwMjYwODIxMTUzNyIsImxhc3RfdXBkYXRlZCI6IjIwMjYtMDctMjAiLCJwdWJsaXNoZXIiOiJEcsO2bW1hcm5hIGZyw6VuIFRqw6Ryw7YgLyBTdHVkaW8gSmFyZGVuYmVyZyIsInJpZ2h0cyI6InBlciBhdXRob3I7IG5vdCBDcmVhdGl2ZSBDb21tb25zIiwic2VydmVyX29wZXJhdG9yIjoiU3R1ZGlvIEphcmRlbmJlcmcifX0.rpvweY-CltH4qSZVuW45fAQ5_RLA9ZwEEvTYogmwGLjtlEqoH8oNIfQ3BPVyZc9iFQlhRnb02X4zXqzu4KJEBw"
+        }
+      }
+    }
+  }
+}

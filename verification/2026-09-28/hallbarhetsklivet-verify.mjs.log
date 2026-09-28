@@ -1,0 +1,8 @@
+v0.2 envelope found (spec 0.2.1, kid 2a9uZiSJ6nnC...)
+Verifying against live wire:
+  [PASS] JWS verifies; payload == canonical wrapper (typ, alg, kid all strict)
+  [PASS] payload_digest reproduces (inside signed wrapper)
+  [PASS] content_digest matches the served text arm bytes
+  [PASS] iat present; no v0.1 content_hash* fields; exactly one rights field
+  [PASS] signed payload == served result or error
+ALL CHECKS PASSED (live successful tool result)

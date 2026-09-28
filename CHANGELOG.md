@@ -1,6 +1,38 @@
 # Changelog
 
-## Unreleased
+## Tooling v0.2.2 (2026-09-28) - implementation lessons and five reference examples
+
+Signing specification and published v0.2.1 vectors are unchanged. Tooling version
+is recorded in `verifiers/package.json` and exposed by both CLIs with `--version`.
+
+### Fixed
+- Both live verifiers discover the server card at the URL origin, including
+  endpoints at `/mcp`, nested paths, trailing slashes and query strings.
+- Send an explicit MCP protocol-version header, defaulting to `2025-11-25`,
+  with `--protocol-version` for other supported revisions.
+- A valid signed error no longer counts as a successful tool call. Deliberate
+  error tests use `--expect-error`; signed payloads must match the served
+  JSON-RPC error or tool-level error. HTTP error bodies remain verifiable.
+- Require matching JSON-RPC response IDs and an unambiguous result/error shape.
+  SSE parsing skips empty events and notifications before the matching response.
+- Python requires real RFC 8785 canonicalization instead of silently using
+  sorted-key JSON, which is incorrect for some numbers and Unicode keys.
+
+### Added
+- PPCP and the independent Hållbarhetsklivet demo alongside the original three
+  reference implementations, with distinct rights and authority explanations.
+- Dated public evidence: both CLIs verified a successful response from all five
+  endpoints; independent checks reproduced signed bindings and key thumbprints.
+- 44 local CLI regression scenarios plus CI for both verifiers and all nine
+  existing positive/negative vectors. Live network checks remain opt-in.
+
+### Changed
+- Replaced the blanket migration statement with dated, explicitly scoped
+  verification results. One successful response is not full server conformance.
+- Documented the direct stateless probe scope, dependency setup, explicit tool
+  selection and separate signing-spec/tooling versions.
+
+## Historical documentation update (2026-08-22; reconstructed from Git history)
 - Companion essay added ([ESSAY.md](ESSAY.md)): "Why should an agent believe
   you?" - the argument in prose, published once all three reference servers
   went live at v0.2.1 and wire-verified with the repo verifier.

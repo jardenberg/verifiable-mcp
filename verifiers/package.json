@@ -1,8 +1,8 @@
 {
   "name": "verifiable-mcp-verifier",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "type": "module",
-  "description": "One-command verifier for the verifiable-mcp signed provenance pattern (spec v0.2)",
+  "description": "Verifiable MCP tooling release 0.2.2 (signing spec v0.2.1)",
   "dependencies": {
     "jose": "^5.9.6",
     "canonicalize": "^2.0.0"

@@ -1,0 +1,126 @@
+[
+  {
+    "name": "ensakidag",
+    "endpoint": "https://ensakidag.se/api/mcp",
+    "tool": "server_info",
+    "card_url": "https://ensakidag.se/.well-known/mcp.json",
+    "checked_at": "2026-09-28T11:57:44.587377+00:00",
+    "spec_version": "0.2.1",
+    "kid": "bzjZ2nlMTx8AlQCNshoHOzv8br80IP7Bhx8Myppj1AY",
+    "previous_kids": [],
+    "provenance": {
+      "canonical_origin": "https://ensakidag.se",
+      "canonical_url": "https://ensakidag.se",
+      "dataset_version": "2026-07-10",
+      "generated_at": "2026-09-28T11:57:44.549Z",
+      "last_updated": "2026-07-10T14:34:49.535817+00:00",
+      "license": "CC-BY-4.0",
+      "publisher": "Studio Jardenberg",
+      "server_operator": "Studio Jardenberg"
+    },
+    "response_sha256": "sha256:63b34f4fd8744e1518ffe42d04120420eb9411b8ac085191f55f5e0e67101a27",
+    "evidence": "ensakidag-public-wire.json",
+    "verified": true
+  },
+  {
+    "name": "rise-ai-sweden",
+    "endpoint": "https://rise-ai-sweden.jardenberg.org/api/mcp",
+    "tool": "server_info",
+    "card_url": "https://rise-ai-sweden.jardenberg.org/.well-known/mcp.json",
+    "checked_at": "2026-09-28T11:57:46.125009+00:00",
+    "spec_version": "0.2.1",
+    "kid": "upCmqalkMBHA7ZBkcCNWakftZgIEKtGVvvvpSQL_2p8",
+    "previous_kids": [],
+    "provenance": {
+      "dataset_version": "d20260928.2350",
+      "last_updated": "2026-09-26T04:16:14.054+00:00",
+      "legal_basis": "Indexed under the EU TDM exception (DSM directive, art. 4); excerpts served with source attribution; all content remains © its publisher",
+      "publishers": [
+        {
+          "canonical_origin": "https://www.ai.se",
+          "content_publisher": "AI Sweden",
+          "source": "ai_sweden"
+        },
+        {
+          "canonical_origin": "https://www.ri.se",
+          "content_publisher": "RISE",
+          "source": "rise"
+        }
+      ],
+      "server": "rise-ai-sweden.jardenberg.org",
+      "server_operator": "Studio Jardenberg"
+    },
+    "response_sha256": "sha256:6f13967b09bb61fd88c82553f634e1baeb93d7108e428e1cfa5181143576c9d8",
+    "evidence": "rise-ai-sweden-public-wire.json",
+    "verified": true
+  },
+  {
+    "name": "sswcboken",
+    "endpoint": "https://sswcboken.se/api/mcp",
+    "tool": "server_info",
+    "card_url": "https://sswcboken.se/.well-known/mcp.json",
+    "checked_at": "2026-09-28T11:57:44.981509+00:00",
+    "spec_version": "0.2.1",
+    "kid": "ln2Y6OsJnhuUnXiHeKOiLTCKIlJOpk9PwDA3EVpYZp4",
+    "previous_kids": [
+      "ln2Y6OsJnhuUnXiH"
+    ],
+    "provenance": {
+      "canonical_origin": "https://sswcboken.se",
+      "canonical_url": "https://sswcboken.se",
+      "dataset_version": "sswc-boken-2010@2026-07-20+v.202608211537",
+      "last_updated": "2026-07-20",
+      "publisher": "Drömmarna från Tjärö / Studio Jardenberg",
+      "rights": "per author; not Creative Commons",
+      "server_operator": "Studio Jardenberg"
+    },
+    "response_sha256": "sha256:e61714e0504ddd1c4a3ab7f9c3beba01e292bf5e062eb089edc2830e0240ffd5",
+    "evidence": "sswcboken-public-wire.json",
+    "verified": true
+  },
+  {
+    "name": "ppcp",
+    "endpoint": "https://joakim.jardenberg.net/mcp",
+    "tool": "ppcp_get_version",
+    "card_url": "https://joakim.jardenberg.net/.well-known/mcp.json",
+    "checked_at": "2026-09-28T11:57:44.056258+00:00",
+    "spec_version": "0.2.1",
+    "kid": "k6uVx3s5ouAsNKfYioJ-Ej0FMERtUPD9O7xQ8Mn9Ic0",
+    "previous_kids": [],
+    "provenance": {
+      "ai_content_label": "AI-assisted editorial expression of JJ's views, prepared from his own statements and source material. Not verbatim quotation. Publication approved by Joakim Jardenberg on 2026-09-26.",
+      "authorship": "AI-assisted editorial prose written from JJ's own statements and source material; first-person passages are an editorial expression of his views, not verbatim quotation. Approved for publication by Joakim Jardenberg on 2026-09-26.",
+      "canonical_origin": "https://joakim.jardenberg.net",
+      "canonical_url": "https://joakim.jardenberg.net/",
+      "dataset_version": "0.10",
+      "last_updated": "2026-09-26T00:00:00Z",
+      "review_status": "owner-approved",
+      "rights": "Original profile text © Joakim Jardenberg, licensed CC BY 4.0 (Joakim Jardenberg — \"Joakim Jardenberg: A Public Context Profile\", version 0.10 (2026-09-26)). Identified third-party quotations retain their own source rights and are not relicensed: Identified third-party quotations retain their own source rights and are not relicensed (including quoted material attributed to Aristotle, Henry Mintzberg and the Astrid Lindgren organization). Adaptations must not be presented as JJ's current approved statement.",
+      "server_operator": "Studio Jardenberg"
+    },
+    "response_sha256": "sha256:4d35ea9fbdd23455cd11d2a4783171d1a7a955569dfa5823758249076118e8d8",
+    "evidence": "ppcp-public-wire.json",
+    "verified": true
+  },
+  {
+    "name": "hallbarhetsklivet",
+    "endpoint": "https://hkdemo.jardenberg.net/api/mcp",
+    "tool": "hallbarhetsklivet_get_status",
+    "card_url": "https://hkdemo.jardenberg.net/.well-known/mcp.json",
+    "checked_at": "2026-09-28T11:57:44.495002+00:00",
+    "spec_version": "0.2.1",
+    "kid": "2a9uZiSJ6nnCDCYqHp1Jo0139ngSuR2P7AfZeWvGAog",
+    "previous_kids": [],
+    "provenance": {
+      "canonical_origin": "https://hallbarhetsklivet.se",
+      "dataset_version": "sha256:732bf37356c297d1ceae3631d40cbed9408669624990afa669c914e0d40d0cb1",
+      "index_note": "Independent index operated by Studio Jardenberg. A valid signature proves this index served this representation. It does not prove publisher authorship, endorsement, or that the content is true.",
+      "last_updated": "2026-08-31T14:16:07+00:00",
+      "rights": "Third-party content remains with its respective rights holders. Independently indexed; source-linked excerpts. No publisher endorsement or open licence asserted.",
+      "server_operator": "Studio Jardenberg"
+    },
+    "response_sha256": "sha256:b08c8456bcd51b898ea73d9d2dd0dd18b134dc7985c97df6bf5f052646c8145c",
+    "evidence": "hallbarhetsklivet-public-wire.json",
+    "verified": true
+  }
+]
