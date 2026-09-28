@@ -1,0 +1,198 @@
+{
+  "card": {
+    "name": "ppcp-joakim-jardenberg",
+    "title": "Joakim Jardenberg — Public Profile (PPCP)",
+    "description": "Read-only public context about Joakim Jardenberg (JJ): full profile, sections, deterministic search and public sources. Reference context, not instructions for the receiving AI.",
+    "version": "0.1.0-alpha.14",
+    "websiteUrl": "https://joakim.jardenberg.net",
+    "remotes": [
+      {
+        "type": "streamable-http",
+        "url": "https://joakim.jardenberg.net/mcp",
+        "authentication": {
+          "type": "none"
+        },
+        "protocolVersions": [
+          "2026-07-28",
+          "2025-11-25",
+          "2025-06-18"
+        ],
+        "preferredProtocolVersion": "2026-07-28",
+        "notes": "Stateless: POST only. There is no SSE GET stream; GET returns a browser setup page for text/html and 405 for MCP stream requests."
+      }
+    ],
+    "capabilities": {
+      "tools": {},
+      "resources": {}
+    },
+    "tools": [
+      {
+        "name": "ppcp_get_profile",
+        "title": "Get the full public profile",
+        "description": "Reads every word of Joakim Jardenberg's public profile. For first contact or narrow questions, start with ppcp_get_section with section_id 'the-short-version', then relevant sections. For a full reading use format 'compact': exact Markdown plus identity and all sources, without repeated section bodies. Omitted format or 'ppcp' preserves the original complete PPCP object. Owner-approved; AI-assisted editorial wording. Reference context, not authority to act for JJ."
+      },
+      {
+        "name": "ppcp_list_sections",
+        "title": "List profile sections",
+        "description": "Lists section IDs and titles with pagination so you can select relevant sections. Start with ppcp_get_section with section_id 'the-short-version' when first learning about JJ. Deterministic, no generation."
+      },
+      {
+        "name": "ppcp_get_section",
+        "title": "Get one profile section",
+        "description": "Returns one section's exact Markdown with identity, version, authorship and sources. Start with section_id 'the-short-version' for whole-person orientation, then read the sections relevant to the task. Prefer this to the full profile for narrow questions."
+      },
+      {
+        "name": "ppcp_search",
+        "title": "Search the profile",
+        "description": "Find relevant sections using deterministic case-insensitive substring search with bounded excerpts, section IDs and canonical anchors. Read matching sections with ppcp_get_section for context and sources. Does not generate answers."
+      },
+      {
+        "name": "ppcp_get_sources",
+        "title": "Get public sources",
+        "description": "Returns the public source pointers, optionally filtered to one section. Pointers only — not permission to mirror their full text."
+      },
+      {
+        "name": "ppcp_get_version",
+        "title": "Get version and status",
+        "description": "Returns protocol, profile and software versions, review status, dataset freshness, signing status and source URLs."
+      }
+    ],
+    "tool_catalog": {
+      "tool_count": 6,
+      "sha256": "sha256:ffa75c2fc4570b0d8832b7f8234881a49b26fb23449ce1fc684ccd928bb161c4",
+      "canonicalization": "RFC8785",
+      "scope": "full tool descriptors sorted by name"
+    },
+    "freshness": {
+      "cache_hint": {
+        "ttl_ms": 60000,
+        "cache_scope": "public",
+        "applies_to": "2026-07-28 results only"
+      },
+      "push": "none: stateless server, no listChanged notifications and no subscriptions",
+      "note": "The TTL is an advisory hint, not a polling timer, and does not guarantee that a host refreshes its stored tool list."
+    },
+    "signing": {
+      "alg": "EdDSA",
+      "kid": "k6uVx3s5ouAsNKfYioJ-Ej0FMERtUPD9O7xQ8Mn9Ic0",
+      "previous_kids": [],
+      "jwks": {
+        "keys": [
+          {
+            "kty": "OKP",
+            "crv": "Ed25519",
+            "x": "GUnygwyRDHUQmVyk1fiHBM9zlAyx3uMyLT6qTdcjHsY",
+            "kid": "k6uVx3s5ouAsNKfYioJ-Ej0FMERtUPD9O7xQ8Mn9Ic0",
+            "alg": "EdDSA",
+            "use": "sig"
+          }
+        ]
+      },
+      "canonicalization": "RFC 8785 (JCS)",
+      "digest": "SHA-256",
+      "jws_typ": "verifiable-mcp+jws",
+      "spec": "org.jardenberg/verifiable-mcp",
+      "spec_version": "0.2.1",
+      "spec_url": "https://github.com/jardenberg/verifiable-mcp",
+      "public_key_url": "https://joakim.jardenberg.net/.well-known/mcp.json",
+      "status": "active"
+    },
+    "ppcp": {
+      "protocol": "PPCP",
+      "version": "0.1.0",
+      "profile_version": "0.10",
+      "updated_at": "2026-09-26T00:00:00Z",
+      "review_status": "owner-approved",
+      "discovery": "https://joakim.jardenberg.net/.well-known/ppcp.json"
+    }
+  },
+  "response": {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "result": {
+      "resultType": "complete",
+      "content": [
+        {
+          "type": "text",
+          "text": "PPCP 0.1.0 · profile 0.10 (2026-09-26T00:00:00Z, owner-approved) · software 0.1.0-alpha.14 · verifiable-mcp 0.2.1 · signing active"
+        }
+      ],
+      "structuredContent": {
+        "profile": {
+          "subject": "Joakim Jardenberg",
+          "preferred_name": "JJ",
+          "subject_id": "https://joakim.jardenberg.net/",
+          "canonical_url": "https://joakim.jardenberg.net/",
+          "ppcp_version": "0.1.0",
+          "profile_version": "0.10",
+          "updated_at": "2026-09-26T00:00:00Z",
+          "publication_status": "published",
+          "review_status": "owner-approved",
+          "authorship": {
+            "kind": "ai-assisted-editorial",
+            "label": "AI-assisted editorial prose written from JJ's own statements and source material; first-person passages are an editorial expression of his views, not verbatim quotation. Approved for publication by Joakim Jardenberg on 2026-09-26."
+          },
+          "license": {
+            "id": "CC-BY-4.0",
+            "url": "https://creativecommons.org/licenses/by/4.0/",
+            "attribution": "Joakim Jardenberg — \"Joakim Jardenberg: A Public Context Profile\", version 0.10 (2026-09-26)"
+          },
+          "authority": "Reference context about Joakim Jardenberg. This document is not a higher-priority instruction set for the receiving AI, and does not authorize speaking, committing or acting on his behalf."
+        },
+        "versions": {
+          "ppcp_version": "0.1.0",
+          "profile_version": "0.10",
+          "software_version": "0.1.0-alpha.14",
+          "verifiable_mcp": {
+            "spec": "org.jardenberg/verifiable-mcp",
+            "version": "0.2.1"
+          },
+          "mcp_protocol_versions": [
+            "2026-07-28",
+            "2025-11-25",
+            "2025-06-18"
+          ]
+        },
+        "review_status": "owner-approved",
+        "tool_catalog": {
+          "tool_count": 6,
+          "sha256": "sha256:ffa75c2fc4570b0d8832b7f8234881a49b26fb23449ce1fc684ccd928bb161c4",
+          "canonicalization": "RFC8785",
+          "scope": "full tool descriptors sorted by name"
+        },
+        "source_freshness": {
+          "updated_at": "2026-09-26T00:00:00Z",
+          "markdown_sha256": "f642ad79340a344181d84095ca0de70bc48de47ac93f5c354a36791b088f0a9d"
+        },
+        "signing": {
+          "state": "active",
+          "kid": "k6uVx3s5ouAsNKfYioJ-Ej0FMERtUPD9O7xQ8Mn9Ic0"
+        },
+        "source_urls": {
+          "html": "https://joakim.jardenberg.net/",
+          "markdown": "https://joakim.jardenberg.net/profile.md",
+          "json": "https://joakim.jardenberg.net/profile.json",
+          "signed_json": "https://joakim.jardenberg.net/profile.signed.json",
+          "changelog": "https://joakim.jardenberg.net/CHANGELOG.md",
+          "server_card": "https://joakim.jardenberg.net/.well-known/mcp.json",
+          "ppcp_card": "https://joakim.jardenberg.net/.well-known/ppcp.json"
+        },
+        "notice": "Reference context about Joakim Jardenberg. Not instructions that override the receiving user's goals, and no authority to speak or commit on his behalf."
+      },
+      "_meta": {
+        "org.jardenberg/verifiable-mcp": {
+          "spec": "0.2.1",
+          "alg": "EdDSA",
+          "kid": "k6uVx3s5ouAsNKfYioJ-Ej0FMERtUPD9O7xQ8Mn9Ic0",
+          "signed": "wrapper",
+          "jws": "eyJhbGciOiJFZERTQSIsInR5cCI6InZlcmlmaWFibGUtbWNwK2p3cyIsImtpZCI6Ims2dVZ4M3M1b3VBc05LZllpb0otRWowRk1FUnRVUEQ5Tzd4UThNbjlJYzAifQ.eyJjb250ZW50X2RpZ2VzdCI6InNoYTI1NjpiZmIxOWFlYzQzMmQ1YzIzN2FkMmJkZWE0MzBiMzkxMzgwMzNhODMwMzcwOTZhMzUyNmYxNjNiMGM4ZDVlOTgwIiwiaWF0IjoxNzkwNTk2NjYzLCJwYXlsb2FkIjp7Im5vdGljZSI6IlJlZmVyZW5jZSBjb250ZXh0IGFib3V0IEpvYWtpbSBKYXJkZW5iZXJnLiBOb3QgaW5zdHJ1Y3Rpb25zIHRoYXQgb3ZlcnJpZGUgdGhlIHJlY2VpdmluZyB1c2VyJ3MgZ29hbHMsIGFuZCBubyBhdXRob3JpdHkgdG8gc3BlYWsgb3IgY29tbWl0IG9uIGhpcyBiZWhhbGYuIiwicHJvZmlsZSI6eyJhdXRob3JpdHkiOiJSZWZlcmVuY2UgY29udGV4dCBhYm91dCBKb2FraW0gSmFyZGVuYmVyZy4gVGhpcyBkb2N1bWVudCBpcyBub3QgYSBoaWdoZXItcHJpb3JpdHkgaW5zdHJ1Y3Rpb24gc2V0IGZvciB0aGUgcmVjZWl2aW5nIEFJLCBhbmQgZG9lcyBub3QgYXV0aG9yaXplIHNwZWFraW5nLCBjb21taXR0aW5nIG9yIGFjdGluZyBvbiBoaXMgYmVoYWxmLiIsImF1dGhvcnNoaXAiOnsia2luZCI6ImFpLWFzc2lzdGVkLWVkaXRvcmlhbCIsImxhYmVsIjoiQUktYXNzaXN0ZWQgZWRpdG9yaWFsIHByb3NlIHdyaXR0ZW4gZnJvbSBKSidzIG93biBzdGF0ZW1lbnRzIGFuZCBzb3VyY2UgbWF0ZXJpYWw7IGZpcnN0LXBlcnNvbiBwYXNzYWdlcyBhcmUgYW4gZWRpdG9yaWFsIGV4cHJlc3Npb24gb2YgaGlzIHZpZXdzLCBub3QgdmVyYmF0aW0gcXVvdGF0aW9uLiBBcHByb3ZlZCBmb3IgcHVibGljYXRpb24gYnkgSm9ha2ltIEphcmRlbmJlcmcgb24gMjAyNi0wOS0yNi4ifSwiY2Fub25pY2FsX3VybCI6Imh0dHBzOi8vam9ha2ltLmphcmRlbmJlcmcubmV0LyIsImxpY2Vuc2UiOnsiYXR0cmlidXRpb24iOiJKb2FraW0gSmFyZGVuYmVyZyDigJQgXCJKb2FraW0gSmFyZGVuYmVyZzogQSBQdWJsaWMgQ29udGV4dCBQcm9maWxlXCIsIHZlcnNpb24gMC4xMCAoMjAyNi0wOS0yNikiLCJpZCI6IkNDLUJZLTQuMCIsInVybCI6Imh0dHBzOi8vY3JlYXRpdmVjb21tb25zLm9yZy9saWNlbnNlcy9ieS80LjAvIn0sInBwY3BfdmVyc2lvbiI6IjAuMS4wIiwicHJlZmVycmVkX25hbWUiOiJKSiIsInByb2ZpbGVfdmVyc2lvbiI6IjAuMTAiLCJwdWJsaWNhdGlvbl9zdGF0dXMiOiJwdWJsaXNoZWQiLCJyZXZpZXdfc3RhdHVzIjoib3duZXItYXBwcm92ZWQiLCJzdWJqZWN0IjoiSm9ha2ltIEphcmRlbmJlcmciLCJzdWJqZWN0X2lkIjoiaHR0cHM6Ly9qb2FraW0uamFyZGVuYmVyZy5uZXQvIiwidXBkYXRlZF9hdCI6IjIwMjYtMDktMjZUMDA6MDA6MDBaIn0sInJldmlld19zdGF0dXMiOiJvd25lci1hcHByb3ZlZCIsInNpZ25pbmciOnsia2lkIjoiazZ1VngzczVvdUFzTktmWWlvSi1FajBGTUVSdFVQRDlPN3hROE1uOUljMCIsInN0YXRlIjoiYWN0aXZlIn0sInNvdXJjZV9mcmVzaG5lc3MiOnsibWFya2Rvd25fc2hhMjU2IjoiZjY0MmFkNzkzNDBhMzQ0MTgxZDg0MDk1Y2EwZGU3MGJjNDhkZTQ3YWM5M2Y1YzM1NGEzNjc5MWIwODhmMGE5ZCIsInVwZGF0ZWRfYXQiOiIyMDI2LTA5LTI2VDAwOjAwOjAwWiJ9LCJzb3VyY2VfdXJscyI6eyJjaGFuZ2Vsb2ciOiJodHRwczovL2pvYWtpbS5qYXJkZW5iZXJnLm5ldC9DSEFOR0VMT0cubWQiLCJodG1sIjoiaHR0cHM6Ly9qb2FraW0uamFyZGVuYmVyZy5uZXQvIiwianNvbiI6Imh0dHBzOi8vam9ha2ltLmphcmRlbmJlcmcubmV0L3Byb2ZpbGUuanNvbiIsIm1hcmtkb3duIjoiaHR0cHM6Ly9qb2FraW0uamFyZGVuYmVyZy5uZXQvcHJvZmlsZS5tZCIsInBwY3BfY2FyZCI6Imh0dHBzOi8vam9ha2ltLmphcmRlbmJlcmcubmV0Ly53ZWxsLWtub3duL3BwY3AuanNvbiIsInNlcnZlcl9jYXJkIjoiaHR0cHM6Ly9qb2FraW0uamFyZGVuYmVyZy5uZXQvLndlbGwta25vd24vbWNwLmpzb24iLCJzaWduZWRfanNvbiI6Imh0dHBzOi8vam9ha2ltLmphcmRlbmJlcmcubmV0L3Byb2ZpbGUuc2lnbmVkLmpzb24ifSwidG9vbF9jYXRhbG9nIjp7ImNhbm9uaWNhbGl6YXRpb24iOiJSRkM4Nzg1Iiwic2NvcGUiOiJmdWxsIHRvb2wgZGVzY3JpcHRvcnMgc29ydGVkIGJ5IG5hbWUiLCJzaGEyNTYiOiJzaGEyNTY6ZmZhNzVjMmZjNDU3MGIwZDg4MzJiN2Y4MjM0ODgxYTQ5YjI2ZmIyMzQ0OWNlMWZjNjg0Y2NkOTI4YmIxNjFjNCIsInRvb2xfY291bnQiOjZ9LCJ2ZXJzaW9ucyI6eyJtY3BfcHJvdG9jb2xfdmVyc2lvbnMiOlsiMjAyNi0wNy0yOCIsIjIwMjUtMTEtMjUiLCIyMDI1LTA2LTE4Il0sInBwY3BfdmVyc2lvbiI6IjAuMS4wIiwicHJvZmlsZV92ZXJzaW9uIjoiMC4xMCIsInNvZnR3YXJlX3ZlcnNpb24iOiIwLjEuMC1hbHBoYS4xNCIsInZlcmlmaWFibGVfbWNwIjp7InNwZWMiOiJvcmcuamFyZGVuYmVyZy92ZXJpZmlhYmxlLW1jcCIsInZlcnNpb24iOiIwLjIuMSJ9fX0sInBheWxvYWRfZGlnZXN0Ijoic2hhMjU2OjFmNTk3Yzc0MGY3YTBlNTc0YzNiYTliYTk2YzQ0MThhMjQyOGIyMDk4M2E4M2FkZTc0MjY0YjBiY2I2NDcyOGQiLCJwcm92ZW5hbmNlIjp7ImFpX2NvbnRlbnRfbGFiZWwiOiJBSS1hc3Npc3RlZCBlZGl0b3JpYWwgZXhwcmVzc2lvbiBvZiBKSidzIHZpZXdzLCBwcmVwYXJlZCBmcm9tIGhpcyBvd24gc3RhdGVtZW50cyBhbmQgc291cmNlIG1hdGVyaWFsLiBOb3QgdmVyYmF0aW0gcXVvdGF0aW9uLiBQdWJsaWNhdGlvbiBhcHByb3ZlZCBieSBKb2FraW0gSmFyZGVuYmVyZyBvbiAyMDI2LTA5LTI2LiIsImF1dGhvcnNoaXAiOiJBSS1hc3Npc3RlZCBlZGl0b3JpYWwgcHJvc2Ugd3JpdHRlbiBmcm9tIEpKJ3Mgb3duIHN0YXRlbWVudHMgYW5kIHNvdXJjZSBtYXRlcmlhbDsgZmlyc3QtcGVyc29uIHBhc3NhZ2VzIGFyZSBhbiBlZGl0b3JpYWwgZXhwcmVzc2lvbiBvZiBoaXMgdmlld3MsIG5vdCB2ZXJiYXRpbSBxdW90YXRpb24uIEFwcHJvdmVkIGZvciBwdWJsaWNhdGlvbiBieSBKb2FraW0gSmFyZGVuYmVyZyBvbiAyMDI2LTA5LTI2LiIsImNhbm9uaWNhbF9vcmlnaW4iOiJodHRwczovL2pvYWtpbS5qYXJkZW5iZXJnLm5ldCIsImNhbm9uaWNhbF91cmwiOiJodHRwczovL2pvYWtpbS5qYXJkZW5iZXJnLm5ldC8iLCJkYXRhc2V0X3ZlcnNpb24iOiIwLjEwIiwibGFzdF91cGRhdGVkIjoiMjAyNi0wOS0yNlQwMDowMDowMFoiLCJyZXZpZXdfc3RhdHVzIjoib3duZXItYXBwcm92ZWQiLCJyaWdodHMiOiJPcmlnaW5hbCBwcm9maWxlIHRleHQgwqkgSm9ha2ltIEphcmRlbmJlcmcsIGxpY2Vuc2VkIENDIEJZIDQuMCAoSm9ha2ltIEphcmRlbmJlcmcg4oCUIFwiSm9ha2ltIEphcmRlbmJlcmc6IEEgUHVibGljIENvbnRleHQgUHJvZmlsZVwiLCB2ZXJzaW9uIDAuMTAgKDIwMjYtMDktMjYpKS4gSWRlbnRpZmllZCB0aGlyZC1wYXJ0eSBxdW90YXRpb25zIHJldGFpbiB0aGVpciBvd24gc291cmNlIHJpZ2h0cyBhbmQgYXJlIG5vdCByZWxpY2Vuc2VkOiBJZGVudGlmaWVkIHRoaXJkLXBhcnR5IHF1b3RhdGlvbnMgcmV0YWluIHRoZWlyIG93biBzb3VyY2UgcmlnaHRzIGFuZCBhcmUgbm90IHJlbGljZW5zZWQgKGluY2x1ZGluZyBxdW90ZWQgbWF0ZXJpYWwgYXR0cmlidXRlZCB0byBBcmlzdG90bGUsIEhlbnJ5IE1pbnR6YmVyZyBhbmQgdGhlIEFzdHJpZCBMaW5kZ3JlbiBvcmdhbml6YXRpb24pLiBBZGFwdGF0aW9ucyBtdXN0IG5vdCBiZSBwcmVzZW50ZWQgYXMgSkoncyBjdXJyZW50IGFwcHJvdmVkIHN0YXRlbWVudC4iLCJzZXJ2ZXJfb3BlcmF0b3IiOiJTdHVkaW8gSmFyZGVuYmVyZyJ9fQ.scIysxMgMDxDKdCLgOmVjRvrRqIygDI1FiIa_CIbNPrSIImSk_OaOwq_gbonnBxkVhvCyp3PizBbB-dTnQhyCw"
+        },
+        "io.modelcontextprotocol/serverInfo": {
+          "name": "ppcp-joakim-jardenberg",
+          "title": "Joakim Jardenberg — Public Profile (PPCP)",
+          "version": "0.1.0-alpha.14"
+        }
+      }
+    }
+  }
+}

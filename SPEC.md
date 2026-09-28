@@ -1,6 +1,6 @@
 # Verifiable MCP responses - pattern spec v0.2.1
 
-*Working pilot of C2PA-spirit provenance for MCP tool output. Signed, sourced, reproducible. Three reference implementations run this in production: [ensakidag.se](https://ensakidag.se/mcp), [rise-ai-sweden.jardenberg.org](https://rise-ai-sweden.jardenberg.org), [sswcboken.se](https://sswcboken.se/mcp).*
+*Working pilot of C2PA-spirit provenance for MCP tool output. Signed, sourced, reproducible. See the [reference implementations and dated verification evidence](README.md#reference-implementations) for current deployments. Tooling releases have their own version; this signing specification remains v0.2.1.*
 
 **Changes in v0.2.1** (conformance release, driven by an external reviewer who ran the published verifier against the live wires - which is exactly what the pattern asks of its readers): the `_meta` key follows MCP's namespaced-key grammar (`org.jardenberg/verifiable-mcp` - reverse-DNS prefix, slash, name, cf `io.modelcontextprotocol/clientInfo`); JWS `typ` is mandated to one explicit value; the error envelope moves to `error.data` where strict SDKs preserve it; tool-level `isError` results get a defined shape; `canonical_origin` is a string; `content_digest` is byte-precise; verifiers get hard requirements; the vector set gains prose-arm, resources, error, and negative cases; and the v0.1 `content_hash*` fields are banned from inside the signed wrapper (they were surviving there, stale semantics and all - our own label-drift bug class, caught recurring).
 

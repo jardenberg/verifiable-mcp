@@ -4,16 +4,17 @@
 Offline:  python3 verify.py --vectors ../test-vectors/v0.2.1.json
 Live:     python3 verify.py --live https://ensakidag.se/api/mcp [tool] [json-args]
 
-Needs: pip install cryptography          (required)
-       pip install rfc8785               (recommended - real JCS; fallback is
-                                          sorted-keys compact JSON, byte-identical
-                                          for string/int data)
+Needs: pip install -r requirements.txt   (cryptography + rfc8785, both required)
 
 Verifier hygiene, per spec S10: alg pinned to EdDSA; typ must be
 "verifiable-mcp+jws"; kid resolved against the discovered JWKS, FAIL CLOSED on
 a miss; jwk/jku/x5u headers ignored; nothing outside the JWS is trusted.
 """
-import sys, json, base64, hashlib, urllib.request
+import sys, json, base64, hashlib, urllib.request, urllib.error, argparse
+from pathlib import Path
+from urllib.parse import urlsplit
+
+VERSION = json.loads(Path(__file__).with_name("package.json").read_text())["version"]
 
 SPEC_KEY = "org.jardenberg/verifiable-mcp"
 REQUIRED_TYP = "verifiable-mcp+jws"
@@ -22,12 +23,8 @@ def b64u_decode(s: str) -> bytes:
     return base64.urlsafe_b64decode(s + "=" * (-len(s) % 4))
 
 def canonicalize(value) -> bytes:
-    try:
-        import rfc8785  # type: ignore
-        return rfc8785.dumps(value)
-    except ImportError:
-        return json.dumps(value, sort_keys=True, separators=(",", ":"),
-                          ensure_ascii=False).encode("utf-8")
+    import rfc8785  # Required: sorted-key JSON is not RFC 8785 for all payloads.
+    return rfc8785.dumps(value)
 
 def sha256_hex(b: bytes) -> str:
     return hashlib.sha256(b).hexdigest()
@@ -112,12 +109,16 @@ def run_vectors(path: str):
     print("ALL CASES BEHAVED AS EXPECTED (positives verify, negatives rejected)")
 
 def fetch_json(url: str):
-    req = urllib.request.Request(url, headers={"User-Agent": "verifiable-mcp-verifier/0.2.1"})
+    req = urllib.request.Request(url, headers={"User-Agent": f"verifiable-mcp-verifier/{VERSION}"})
     with urllib.request.urlopen(req, timeout=20) as r:
         return json.loads(r.read().decode())
 
-def run_live(endpoint: str, tool: str = None, args_json: str = "{}"):
-    origin = endpoint.split("/api/")[0]
+def run_live(endpoint: str, tool: str = None, args_json: str = "{}",
+             protocol_version: str = "2025-11-25", expect_error: bool = False):
+    parsed = urlsplit(endpoint)
+    if parsed.scheme not in ("http", "https") or not parsed.hostname or parsed.username or parsed.password:
+        raise VerifyError("endpoint must be an HTTP(S) URL without credentials")
+    origin = f"{parsed.scheme}://{parsed.netloc}"
     tool = tool or "server_info"
     body = json.dumps({"jsonrpc": "2.0", "id": 1, "method": "tools/call",
                        "params": {"name": tool, "arguments": json.loads(args_json)}}).encode()
@@ -125,14 +126,30 @@ def run_live(endpoint: str, tool: str = None, args_json: str = "{}"):
         "Content-Type": "application/json",
         "Accept": "application/json, text/event-stream",
         "Mcp-Method": "tools/call", "Mcp-Name": tool,
-        "User-Agent": "verifiable-mcp-verifier/0.2.1"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        raw = r.read().decode()
-    if raw.lstrip().startswith("data:") or "\ndata:" in raw:
-        line = next(l for l in raw.splitlines() if l.startswith("data: "))
-        msg = json.loads(line[6:])
-    else:
+        "MCP-Protocol-Version": protocol_version,
+        "User-Agent": f"verifiable-mcp-verifier/{VERSION}"})
+    try:
+        response = urllib.request.urlopen(req, timeout=30)
+    except urllib.error.HTTPError as e:
+        response = e  # Signed JSON-RPC errors may use HTTP 4xx.
+    with response as r:
+        status, raw = r.status, r.read().decode()
+    if raw.lstrip().startswith("{"):
         msg = json.loads(raw)
+    else:
+        msg = None
+        for event in raw.replace("\r\n", "\n").split("\n\n"):
+            data = "\n".join(line[5:].lstrip(" ") for line in event.splitlines() if line.startswith("data:"))
+            if not data.strip():
+                continue
+            candidate = json.loads(data)
+            if candidate.get("id") == 1:
+                msg = candidate
+                break
+        if msg is None:
+            raise VerifyError("no matching JSON-RPC response in event stream")
+    if msg.get("jsonrpc") != "2.0" or msg.get("id") != 1 or (("result" in msg) == ("error" in msg)):
+        raise VerifyError("invalid or mismatched JSON-RPC response")
     result = msg.get("result") or {}
     env = ((result.get("_meta") or {}).get(SPEC_KEY)
            or ((msg.get("error") or {}).get("data") or {}).get(SPEC_KEY))
@@ -156,22 +173,43 @@ def run_live(endpoint: str, tool: str = None, args_json: str = "{}"):
     if content and content[0].get("type") == "text":
         text = content[0]["text"]
     check_wrapper(wrapper, payload_bytes, text, verbose=True)
-    if result.get("structuredContent") is not None and not result.get("isError"):
-        if canonicalize(wrapper["payload"]) != canonicalize(result["structuredContent"]):
-            raise VerifyError("signed payload != served structuredContent")
-        print("  [PASS] signed payload == served structuredContent")
-    elif result.get("isError"):
-        print("  [INFO] isError result - signed via the error-wrapper path, no structuredContent expected")
-    print("ALL CHECKS PASSED (live)")
+    is_error = "error" in msg or result.get("isError") is True
+    if "error" in msg:
+        expected = {"id": msg["id"], "error": {k: msg["error"][k] for k in ("code", "message")}}
+    elif result.get("isError") is True:
+        if text is None:
+            raise VerifyError("tool error has no text arm")
+        expected = {"isError": True, "message": text}
+    else:
+        if status < 200 or status >= 300:
+            raise VerifyError(f"successful tool result returned HTTP {status}")
+        if "structuredContent" not in result or text is None:
+            raise VerifyError("successful tool result requires structuredContent and a text arm")
+        expected = result["structuredContent"]
+    if canonicalize(wrapper["payload"]) != canonicalize(expected):
+        raise VerifyError("signed payload != served result or error")
+    print("  [PASS] signed payload == served result or error")
+    if is_error != expect_error:
+        raise VerifyError("signed error verified, but tool call failed (use --expect-error to test errors)"
+                          if is_error else "expected a signed error, but tool call succeeded")
+    print("ALL CHECKS PASSED (live signed error; tool did not succeed)" if is_error
+          else "ALL CHECKS PASSED (live successful tool result)")
 
 if __name__ == "__main__":
-    a = sys.argv[1:]
+    parser = argparse.ArgumentParser(description=__doc__)
+    mode = parser.add_mutually_exclusive_group(required=True)
+    mode.add_argument("--vectors")
+    mode.add_argument("--live")
+    mode.add_argument("--version", action="version", version=f"verifiable-mcp tooling {VERSION}; spec 0.2.1")
+    parser.add_argument("tool", nargs="?", default="server_info")
+    parser.add_argument("args_json", nargs="?", default="{}")
+    parser.add_argument("--protocol-version", default="2025-11-25")
+    parser.add_argument("--expect-error", action="store_true")
+    a = parser.parse_args()
     try:
-        if len(a) >= 2 and a[0] == "--vectors":
-            run_vectors(a[1])
-        elif len(a) >= 2 and a[0] == "--live":
-            run_live(a[1], a[2] if len(a) > 2 else None, a[3] if len(a) > 3 else "{}")
+        if a.vectors:
+            run_vectors(a.vectors)
         else:
-            print(__doc__); sys.exit(1)
-    except VerifyError as e:
+            run_live(a.live, a.tool, a.args_json, a.protocol_version, a.expect_error)
+    except (VerifyError, ImportError) as e:
         print(f"  [FAIL] {e}"); sys.exit(1)

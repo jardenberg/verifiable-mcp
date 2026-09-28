@@ -14,6 +14,7 @@ import { compactVerify, importJWK } from "jose";
 import canonicalize from "canonicalize";
 import crypto from "node:crypto";
 
+const VERSION = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8")).version;
 const SPEC_KEY = "org.jardenberg/verifiable-mcp";
 const REQUIRED_TYP = "verifiable-mcp+jws";
 const enc = (s) => new TextEncoder().encode(s);
@@ -82,20 +83,37 @@ async function runVectors(path) {
   console.log("ALL CASES BEHAVED AS EXPECTED (positives verify, negatives rejected)");
 }
 
-async function runLive(endpoint, tool = "server_info", argsJson = "{}") {
-  const origin = endpoint.split("/api/")[0];
+async function runLive(endpoint, tool = "server_info", argsJson = "{}", protocolVersion = "2025-11-25", expectError = false) {
+  const url = new URL(endpoint);
+  if (!["http:", "https:"].includes(url.protocol) || url.username || url.password)
+    throw new VerifyError("endpoint must be an HTTP(S) URL without credentials");
+  const origin = url.origin;
   const res = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json",
                "Accept": "application/json, text/event-stream",
-               "Mcp-Method": "tools/call", "Mcp-Name": tool },
+               "Mcp-Method": "tools/call", "Mcp-Name": tool,
+               "MCP-Protocol-Version": protocolVersion,
+               "User-Agent": `verifiable-mcp-verifier/${VERSION}` },
+    signal: AbortSignal.timeout(30000),
     body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/call",
       params: { name: tool, arguments: JSON.parse(argsJson) } }),
   });
   const raw = await res.text();
-  const msg = raw.includes("data: ")
-    ? JSON.parse(raw.split("\n").find((l) => l.startsWith("data: ")).slice(6))
-    : JSON.parse(raw);
+  let msg;
+  if (raw.trimStart().startsWith("{")) msg = JSON.parse(raw);
+  else {
+    for (const event of raw.replaceAll("\r\n", "\n").split("\n\n")) {
+      const data = event.split("\n").filter((line) => line.startsWith("data:"))
+        .map((line) => line.slice(5).replace(/^ */, "")).join("\n");
+      if (!data.trim()) continue;
+      const candidate = JSON.parse(data);
+      if (candidate.id === 1) { msg = candidate; break; }
+    }
+    if (!msg) throw new VerifyError("no matching JSON-RPC response in event stream");
+  }
+  if (msg.jsonrpc !== "2.0" || msg.id !== 1 || (("result" in msg) === ("error" in msg)))
+    throw new VerifyError("invalid or mismatched JSON-RPC response");
   const result = msg.result ?? {};
   const env = result._meta?.[SPEC_KEY] ?? msg.error?.data?.[SPEC_KEY];
   if (!env) {
@@ -108,7 +126,11 @@ async function runLive(endpoint, tool = "server_info", argsJson = "{}") {
     process.exit(2);
   }
   console.log(`v0.2 envelope found (spec ${env.spec}, kid ${String(env.kid).slice(0, 12)}...)`);
-  const card = await (await fetch(origin + "/.well-known/mcp.json")).json();
+  const cardResponse = await fetch(origin + "/.well-known/mcp.json", {
+    headers: { "User-Agent": `verifiable-mcp-verifier/${VERSION}` }, signal: AbortSignal.timeout(20000),
+  });
+  if (!cardResponse.ok) throw new VerifyError(`discovery returned HTTP ${cardResponse.status}`);
+  const card = await cardResponse.json();
   const jwks = (card.signing?.jwks ?? card.jwks ?? {}).keys ?? [];
   if (!jwks.length) { console.log("No JWKS discoverable from the server card - failing closed."); process.exit(2); }
   const { payloadBytes } = await verifyJwsStrict(env.jws, jwks);
@@ -116,22 +138,44 @@ async function runLive(endpoint, tool = "server_info", argsJson = "{}") {
   console.log("Verifying against live wire:");
   const text = result.content?.[0]?.type === "text" ? result.content[0].text : null;
   checkWrapper(wrapper, payloadBytes, text, true);
-  if (result.structuredContent != null && !result.isError) {
-    if (canonicalize(wrapper.payload) !== canonicalize(result.structuredContent))
-      throw new VerifyError("signed payload != served structuredContent");
-    console.log("  [PASS] signed payload == served structuredContent");
-  } else if (result.isError) {
-    console.log("  [INFO] isError result - signed via the error-wrapper path, no structuredContent expected");
+  const isError = "error" in msg || result.isError === true;
+  let expected;
+  if ("error" in msg) expected = { id: msg.id, error: { code: msg.error.code, message: msg.error.message } };
+  else if (result.isError === true) {
+    if (text === null) throw new VerifyError("tool error has no text arm");
+    expected = { isError: true, message: text };
+  } else {
+    if (!res.ok) throw new VerifyError(`successful tool result returned HTTP ${res.status}`);
+    if (!("structuredContent" in result) || text === null)
+      throw new VerifyError("successful tool result requires structuredContent and a text arm");
+    expected = result.structuredContent;
   }
-  console.log("ALL CHECKS PASSED (live)");
+  if (canonicalize(wrapper.payload) !== canonicalize(expected))
+    throw new VerifyError("signed payload != served result or error");
+  console.log("  [PASS] signed payload == served result or error");
+  if (isError !== expectError)
+    throw new VerifyError(isError ? "signed error verified, but tool call failed (use --expect-error to test errors)"
+      : "expected a signed error, but tool call succeeded");
+  console.log(isError ? "ALL CHECKS PASSED (live signed error; tool did not succeed)"
+    : "ALL CHECKS PASSED (live successful tool result)");
 }
 
-const [mode, arg, tool, args] = process.argv.slice(2);
 try {
-  if (mode === "--vectors" && arg) await runVectors(arg);
-  else if (mode === "--live" && arg) await runLive(arg, tool, args);
-  else { console.log("Usage: verify.mjs --vectors <file> | --live <endpoint> [tool] [json-args]"); process.exit(1); }
+  const positional = [];
+  let protocolVersion = "2025-11-25", expectError = false;
+  for (let i = 2; i < process.argv.length; i++) {
+    const arg = process.argv[i];
+    if (arg === "--version") { console.log(`verifiable-mcp tooling ${VERSION}; spec 0.2.1`); process.exit(0); }
+    if (arg === "--expect-error") expectError = true;
+    else if (arg === "--protocol-version") {
+      protocolVersion = process.argv[++i];
+      if (!protocolVersion || protocolVersion.startsWith("--")) throw new VerifyError("--protocol-version requires a value");
+    } else positional.push(arg);
+  }
+  const [mode, arg, tool, args] = positional;
+  if (mode === "--vectors" && arg && positional.length === 2) await runVectors(arg);
+  else if (mode === "--live" && arg && positional.length <= 4) await runLive(arg, tool, args, protocolVersion, expectError);
+  else { console.log("Usage: verify.mjs --version | --vectors <file> | --live <endpoint> [tool] [json-args] [--protocol-version VERSION] [--expect-error]"); process.exit(1); }
 } catch (e) {
-  if (e instanceof VerifyError) { console.log(`  [FAIL] ${e.message}`); process.exit(1); }
-  throw e;
+  console.error(`  [FAIL] ${e.message}`); process.exit(1);
 }

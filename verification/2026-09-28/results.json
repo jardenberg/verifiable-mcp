@@ -1,0 +1,90 @@
+{
+  "scope": "One successful tool call per endpoint with each verifier; not full conformance certification.",
+  "results": [
+    {
+      "name": "ensakidag",
+      "endpoint": "https://ensakidag.se/api/mcp",
+      "tool": "server_info",
+      "protocol_version": "2025-11-25",
+      "checked_at": "2026-09-28T11:54:28.724931+00:00",
+      "verifiers": {
+        "verify.py": {
+          "exit_code": 0,
+          "log": "ensakidag-verify.py.log"
+        },
+        "verify.mjs": {
+          "exit_code": 0,
+          "log": "ensakidag-verify.mjs.log"
+        }
+      }
+    },
+    {
+      "name": "rise-ai-sweden",
+      "endpoint": "https://rise-ai-sweden.jardenberg.org/api/mcp",
+      "tool": "server_info",
+      "protocol_version": "2025-11-25",
+      "checked_at": "2026-09-28T11:54:28.725301+00:00",
+      "verifiers": {
+        "verify.py": {
+          "exit_code": 0,
+          "log": "rise-ai-sweden-verify.py.log"
+        },
+        "verify.mjs": {
+          "exit_code": 0,
+          "log": "rise-ai-sweden-verify.mjs.log"
+        }
+      }
+    },
+    {
+      "name": "sswcboken",
+      "endpoint": "https://sswcboken.se/api/mcp",
+      "tool": "server_info",
+      "protocol_version": "2025-06-18",
+      "checked_at": "2026-09-28T11:54:28.725396+00:00",
+      "verifiers": {
+        "verify.py": {
+          "exit_code": 0,
+          "log": "sswcboken-verify.py.log"
+        },
+        "verify.mjs": {
+          "exit_code": 0,
+          "log": "sswcboken-verify.mjs.log"
+        }
+      }
+    },
+    {
+      "name": "ppcp",
+      "endpoint": "https://joakim.jardenberg.net/mcp",
+      "tool": "ppcp_get_version",
+      "protocol_version": "2025-11-25",
+      "checked_at": "2026-09-28T11:54:28.725477+00:00",
+      "verifiers": {
+        "verify.py": {
+          "exit_code": 0,
+          "log": "ppcp-verify.py.log"
+        },
+        "verify.mjs": {
+          "exit_code": 0,
+          "log": "ppcp-verify.mjs.log"
+        }
+      }
+    },
+    {
+      "name": "hallbarhetsklivet",
+      "endpoint": "https://hkdemo.jardenberg.net/api/mcp",
+      "tool": "hallbarhetsklivet_get_status",
+      "protocol_version": "2025-11-25",
+      "checked_at": "2026-09-28T11:54:28.725610+00:00",
+      "verifiers": {
+        "verify.py": {
+          "exit_code": 0,
+          "log": "hallbarhetsklivet-verify.py.log"
+        },
+        "verify.mjs": {
+          "exit_code": 0,
+          "log": "hallbarhetsklivet-verify.mjs.log"
+        }
+      }
+    }
+  ]
+}

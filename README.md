@@ -2,36 +2,67 @@
 
 **Signed, sourced, reproducible.** A working pattern for cryptographically verifiable MCP responses: every `tools/call` and `resources/read` answer carries provenance (origin, rights, freshness) and an Ed25519 signature - portable, offline-checkable attribution for knowledge corpora in the agent era. C2PA-spirit, applied to tool output.
 
-**Status: Experimental, spec v0.2.1.** Three reference servers run this in production (migrating v0.1 → v0.2.1, dual-emitting during the window):
+**Status: Experimental. Signing spec v0.2.1; tooling release v0.2.2 (2026-09-28).** The signed format is unchanged. [Changelog](CHANGELOG.md) · [Release metadata](verifiers/package.json)
 
-| Server | Corpus | Rights model |
-|---|---|---|
-| [ensakidag.se](https://ensakidag.se/mcp) | 500-episode personal podcast archive | `license: CC-BY-4.0` (operator owns content) |
-| [rise-ai-sweden.jardenberg.org](https://rise-ai-sweden.jardenberg.org) | Index of RISE + AI Sweden AI publications | `legal_basis: EU TDM exception` (third-party, no rights claimed) |
-| [sswcboken.se](https://sswcboken.se/mcp) | 181 texts by 184 authors (2010) + AI-reply layer | `rights: per author; not Creative Commons` |
+## Reference implementations
 
-Three corpora, three rights situations, one spec. The differentiator is not the cryptography - it is what sits *inside* the signed scope: rights declarations and AI-content labels ("AI-fantasi i författarens anda - INTE författarens egna ord"), making the human/AI distinction itself tamper-evident.
+| Server | Knowledge source | Declared rights and authority | What this demonstrates |
+|---|---|---|---|
+| [ensakidag.se](https://ensakidag.se/mcp) | Personal podcast archive | Original content under CC BY 4.0; operator is the author | First-party archive provenance, with human source material distinguished from AI commentary |
+| [RISE + AI Sweden index](https://rise-ai-sweden.jardenberg.org) | Third-party AI publications | Declared indexing basis and attributed excerpts; no ownership of publisher content claimed | The index signs the representation it serves, while identifying the upstream sources |
+| [sswcboken.se](https://sswcboken.se/mcp) | Multi-author book archive with an AI-reply layer | Per-author rights; not Creative Commons | Human writing and explicitly labelled AI replies share a verifiable delivery format |
+| [PPCP: Joakim Jardenberg](https://joakim.jardenberg.net/mcp) | A living, owner-approved public personal profile, with section retrieval and source pointers | Original profile text under CC BY 4.0; third-party exceptions; AI-assisted editorial authorship and declared owner approval | A person publishes evolving public context with explicit authorship, approval and authority boundaries. Reading it grants no authority to act or speak for them |
+| [Hållbarhetsklivet demo](https://hkdemo.jardenberg.net/) | Swedish tourism and sustainability knowledge, including practical examples and participating organisations | Third-party rights retained; independently indexed, source-linked excerpts; no publisher endorsement or open licence asserted | Practical discovery of sector knowledge in an AI assistant, with the independent service operator distinguished from the original publisher |
+
+Different knowledge sources, rights and authority relationships. One verification pattern.
+
+The differentiator is what sits *inside* the signed scope: source provenance, rights declarations and human/AI distinctions. In the book archive, an AI reply is labelled as imagined writing, not the author's own words. In PPCP, AI-assisted editorial wording and declared owner approval travel with the profile. A signature makes these declarations tamper-evident; it does not independently establish their truth.
+
+Hållbarhetsklivet is an independent demonstration using material from [hallbarhetsklivet.se](https://hallbarhetsklivet.se/). It shows how existing knowledge can become useful through an assistant people already use. The demonstration is not an official publisher service or an endorsement.
+
+**Checked 28 September 2026:** both verifiers passed one successful signed tool response from each of the five endpoints. An independent check also reproduced the signatures, key thumbprints, payload equality, digests and provenance checks. [Dated results, commands and limits](verification/2026-09-28/REPORT.md). This is evidence for those responses, not certification of every tool, error path or client. Some servers retain legacy sibling fields; the checks use the v0.2.1 envelope.
 
 ## Verify in one command
 
-Against the published test vectors (offline, no network):
+From the repository root, install the dependencies:
 
 ```bash
-# Python (needs: pip install cryptography; optional: rfc8785)
-python3 verifiers/verify.py --vectors test-vectors/v0.2.1.json
+# Python 3.11+; both cryptography and real RFC 8785 canonicalization are required
+python3 -m venv .venv
+.venv/bin/pip install -r verifiers/requirements.txt
 
 # Node 18+
-cd verifiers && npm install && node verify.mjs --vectors ../test-vectors/v0.2.1.json
+npm install --prefix verifiers --ignore-scripts
 ```
 
-Against a live server:
+Against the published test vectors (offline after installation):
 
 ```bash
-python3 verifiers/verify.py --live https://ensakidag.se/api/mcp
-node verifiers/verify.mjs --live https://sswcboken.se/api/mcp
+.venv/bin/python verifiers/verify.py --vectors test-vectors/v0.2.1.json
+node verifiers/verify.mjs --vectors test-vectors/v0.2.1.json
 ```
 
-The live check calls one tool, extracts the `_meta["org.jardenberg/verifiable-mcp"]` envelope, fetches the server's published key, verifies the JWS over the RFC 8785 canonical wrapper, and reproduces both digests - failing closed on unknown kids, wrong alg, or wrong typ. If it finds only a v0.1 envelope (sibling `signature` object), it says so: migration in progress, not absence.
+Against the reference endpoints (either verifier accepts the same arguments):
+
+```bash
+.venv/bin/python verifiers/verify.py --live https://ensakidag.se/api/mcp server_info
+.venv/bin/python verifiers/verify.py --live https://rise-ai-sweden.jardenberg.org/api/mcp server_info
+node verifiers/verify.mjs --live https://sswcboken.se/api/mcp server_info --protocol-version 2025-06-18
+node verifiers/verify.mjs --live https://joakim.jardenberg.net/mcp ppcp_get_version
+node verifiers/verify.mjs --live https://hkdemo.jardenberg.net/api/mcp hallbarhetsklivet_get_status
+```
+
+The live check calls the named tool, discovers keys at the endpoint's origin, verifies the JWS over the RFC 8785 canonical wrapper, reproduces both digests, and compares the signed payload with the served result. Unknown keys, wrong algorithms, wrong signature types and altered content fail closed. The Python verifier no longer falls back to ordinary JSON sorting when RFC 8785 is unavailable.
+
+These are bounded, direct probes of public stateless endpoints, not a general MCP client: they do not initialize sessions, authenticate or negotiate protocol revisions. The default `MCP-Protocol-Version` header is `2025-11-25`; use `--protocol-version` for a revision supported by the server. Discovery works for `/mcp`, `/api/mcp` and other endpoint paths. The discovery origin comes from the endpoint URL, not from a source publisher named in provenance.
+
+**A verified error is still an error.** By default, `--live` returns a nonzero exit status if the tool fails, even when its error signature is valid. To deliberately test a signed JSON-RPC or tool-level error, add `--expect-error`. That mode checks the error's signature and binding to the served error, and fails if the tool unexpectedly succeeds. HTTP 4xx error bodies can be verified too. A legacy-only v0.1 envelope is reported separately and does not pass.
+
+Run the local transport regressions, including signed errors and tampering:
+
+```bash
+.venv/bin/python -m unittest discover -s tests -v
+```
 
 ## What a signature proves - and what it never can
 
@@ -55,7 +86,7 @@ Web Bot Auth / RFC 9421 sign the caller and the pipe. AP2 signs payment mandates
 
 ## License
 
-MIT for everything in this repository (spec text, verifiers, vectors). The corpora behind the reference servers keep their own rights - see each server's provenance.
+MIT for the specification text, verifiers, tests and documentation. The corpora behind the reference servers, and captured server responses retained as verification evidence, keep their declared rights. See each server's signed provenance.
 
 ---
 

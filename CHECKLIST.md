@@ -11,4 +11,4 @@ Run this against your own server. Report results (including failures - especiall
 7. [ ] Any AI-authored material inside the payload carries an explicit label, inside the signed scope
 8. [ ] Error frames signed at `error.data` (`payload = {id, error{code, message}}`); `isError` results signed as `{isError, message}`
 9. [ ] Missing key degrades to unsigned - never to downtime
-10. [ ] Both verifiers behave correctly on ALL published vectors including negatives; `--live` passes against your endpoint
+10. [ ] Both verifiers behave correctly on ALL published vectors including negatives; `--live` passes against a successful tool response from your endpoint; deliberately tested signed errors pass only with `--expect-error`
